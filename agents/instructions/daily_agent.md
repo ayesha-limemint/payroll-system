@@ -88,7 +88,7 @@ Never proceed to Phase 5 without APPROVED status.
 
 Read:
 - The approved `01_functional_plan.md`
-- `templates/tech_plan_template.md` from Google Drive
+- `agents/instructions/tech_plan_template.md` from the repository
 
 Fill in the template exactly. Do not free-form it.
 Save to: `daily_briefs/YYYY-MM-DD/02_technical_plan.md`
