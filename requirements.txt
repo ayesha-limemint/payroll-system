@@ -1,0 +1,13 @@
+# Core
+Django>=6.0,<7.0
+djangorestframework>=3.15
+python-dotenv>=1.0
+
+# Agent helpers (configured in Session 0)
+google-api-python-client>=2.0
+google-auth>=2.0
+google-auth-httplib2>=0.2
+PyGithub>=2.0
+
+# Dev / testing
+pytest-django>=4.5

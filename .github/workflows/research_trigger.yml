@@ -1,0 +1,35 @@
+name: Research Agent Trigger
+
+on:
+  schedule:
+    # First Monday of every other month at 8am EST (13:00 UTC)
+    # Runs Jan, Mar, May, Jul, Sep, Nov
+    - cron: "0 13 1-7 1,3,5,7,9,11 1"
+  workflow_dispatch:  # Allow manual trigger for testing
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install google-api-python-client google-auth google-auth-httplib2 python-dotenv requests
+
+      - name: Run research agent
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          python - << 'PYEOF'
+          # Full implementation defined in agents/instructions/research_agent.md
+          # Wired up after Session 0
+          print("Research agent trigger fired")
+          print("TODO: wire up in Session 0")
+          PYEOF

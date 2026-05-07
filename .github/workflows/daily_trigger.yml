@@ -1,0 +1,36 @@
+name: Daily Agent Trigger
+
+on:
+  schedule:
+    # 8am EST Monday-Friday (13:00 UTC)
+    - cron: "0 13 * * 1-5"
+  workflow_dispatch:  # Allow manual trigger for testing
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install google-api-python-client google-auth google-auth-httplib2 python-dotenv
+
+      - name: Write session-ready marker to Drive and notify Ash
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          python - << 'PYEOF'
+          # Writes a session_ready marker to Drive and sends Gmail notification
+          # Full implementation wired up in Session 0
+          import os, datetime
+          today = datetime.date.today().isoformat()
+          print(f"Session trigger fired for {today}")
+          print("TODO: wire up Drive marker + Gmail notification in Session 0")
+          PYEOF
