@@ -11,6 +11,8 @@ Sources:
   - Federal: https://www.irs.gov/
 """
 
+FEDERAL_TAX_YEAR = 2024
+
 # --- Federal Rates ---
 
 FEDERAL_BRACKETS_SINGLE = [
