@@ -3,6 +3,7 @@
 Status: PENDING_REVIEW
 Approved by: —
 Ash Notes: —
+Written: YYYY-MM-DD HH:MM UTC
 
 ---
 

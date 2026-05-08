@@ -28,10 +28,11 @@ for the current state, and resumes from the correct phase automatically.
 
 ## Stack
 
-- Python 3.11 / Django 4.2 / Django REST Framework
+- Python 3.13 / Django 6 / Django REST Framework
 - SQLite (experiment phase)
 - Google Drive — system of record for plans and approvals
 - GitHub — version control, CI, PR-based code review
+- Claude Code Routines — autonomous daily agent loop (runs on Anthropic's infrastructure)
 
 ## Setup
 
@@ -44,3 +45,14 @@ cp .env.example .env
 python manage.py migrate
 python manage.py test
 ```
+
+## Running locally
+
+This project runs on port **8080** to avoid conflicts with other local services.
+
+```bash
+python manage.py runserver 8080
+```
+
+API available at: http://127.0.0.1:8080/api/v1/
+Admin available at: http://127.0.0.1:8080/admin/
