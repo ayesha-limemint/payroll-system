@@ -18,19 +18,34 @@ Each run either:
 
 ---
 
-## Phase 2 — State Recovery
+## Phase 2 — State Recovery & Feature Selection
 
-On every run, call `state_machine.find_active_session()`.
+On every run:
+
+**Step 1 — Find the active session**
+Call `state_machine.find_active_session()`.
 
 This checks the most recent folder under `daily_briefs/` on Drive:
-- If Status is NOT COMPLETE → resume that session
+- If Status is NOT COMPLETE → resume that session, skip to the correct phase
 - If Status IS COMPLETE (or no sessions exist) → start a new session for today
 
 **There is only ever one unfinished session at a time. A new session
 never starts until the previous one reaches Status: COMPLETE.**
 
-Check `requests/pending/` on Drive — if files exist, use the oldest
-one as the feature for the next new session (not the current carry-over).
+**Step 2 — Select today's feature (only when starting a NEW session)**
+
+1. Check `requests/pending/` on Drive first — if any files exist,
+   use the oldest one. Move it to `requests/processed/` once picked up.
+
+2. Otherwise read `BACKLOG.md` from the repo. Find the first item
+   marked `[ ]` (not started). That is today's feature.
+   Mark it `[~]` in BACKLOG.md and commit before proceeding.
+
+3. Read the full context for that backlog item — the Why, the
+   Acceptance criteria, the Out of scope, and the Dependencies.
+   Verify all dependencies are marked `[x]` before proceeding.
+   If a dependency is not complete, skip to the next `[ ]` item
+   whose dependencies ARE met, and note the skip in the functional plan.
 
 ---
 
@@ -38,7 +53,8 @@ one as the feature for the next new session (not the current carry-over).
 
 | Phase | File | Description |
 |-------|------|-------------|
-| 3 | [phase_03_functional_plan.md](phases/phase_03_functional_plan.md) | Write functional plan → notify Ash → exit |
+| 2a | [phase_02a_questions.md](phases/phase_02a_questions.md) | Questions pending — check for `(Ash)` answers in `00_questions.md`, nudge if none, proceed if resolved |
+| 3 | [phase_03_functional_plan.md](phases/phase_03_functional_plan.md) | Write functional plan (or questions doc if clarification needed) → notify Ash → exit |
 | 4 | [phase_04_functional_approval.md](phases/phase_04_functional_approval.md) | Check approval status → proceed or nudge/revise → exit |
 | 5 | [phase_05_technical_plan.md](phases/phase_05_technical_plan.md) | Write technical plan → notify Ash → exit |
 | 6 | [phase_06_technical_approval.md](phases/phase_06_technical_approval.md) | Check approval status → proceed or nudge/revise → exit |
@@ -61,5 +77,5 @@ See [phases/failure_handling.md](phases/failure_handling.md)
 ## Notification Rules
 
 All emails go to: ayesha@limemint.ai
-All subjects prefixed with: `[Payroll Agent]`
+All subjects prefixed with: `[Milton]`
 Body: one paragraph maximum, always include a direct Drive or GitHub link.
