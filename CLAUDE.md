@@ -86,3 +86,34 @@ not appropriate for tax law analysis or technical design decisions.
 - The workflow is defined in `agents/instructions/` — if Ash changes those files, follow the new version on the next run
 - Always prefix test commits with [RED] and implementation commits with [GREEN]
 - Never push to main directly — always use feature branches and PRs
+
+## Rate verification — mandatory
+
+**Every session that touches `rates.py` or any tax calculation must verify
+the rates are current before writing the functional plan.**
+
+Tax rates are updated by governments annually. The current date is provided
+in context at the start of every session — use it. If `FEDERAL_TAX_YEAR`
+in `rates.py` does not match the current year, treat the file as stale
+until proven otherwise.
+
+Procedure (takes 2–3 web searches, do it before Phase 3):
+
+1. Note the current year from the session date.
+2. Search IRS.gov for "Publication 15-T [current year]" — compare federal
+   brackets and standard deductions against `rates.py`.
+3. Search SSA.gov for the Social Security wage base for the current year.
+4. For any NJ session: search NJ.gov/labor for current-year SDI/FLI/UI
+   rates and wage bases; search NJ.gov/treasury for NJ income tax changes.
+5. If anything is stale, update `rates.py` first and commit the correction
+   before writing the functional plan. Note the sources in the file header.
+
+Authoritative sources (no other sources acceptable for rate data):
+- Federal brackets / standard deductions: irs.gov (Publication 15-T,
+  or the annual Rev. Proc. inflation-adjustment announcement)
+- Social Security wage base: ssa.gov/oact/cola/cbb.html
+- NJ income tax: nj.gov/treasury/taxation/
+- NJ SDI/FLI/UI: nj.gov/labor/ea/employer-services/rate-info/
+
+Do not trust rates.py comments, training data, or any non-government
+source for specific dollar figures or percentages.
