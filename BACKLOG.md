@@ -30,7 +30,7 @@ not just the what. This matters for planning decisions.
 
 ---
 
-### [~] Day 1 — Health check endpoint
+### [x] Day 1 — Health check endpoint
 **Goal:** `GET /api/v1/health` returns `{"status": "ok", "service": "payroll-system"}`
 **Context:** Every API needs a health check. This also verifies the Django
 setup is correct, the URL routing works, DRF is configured, and CI is green
@@ -40,7 +40,7 @@ before we touch any real payroll logic. Start here — always.
 
 ---
 
-### [ ] Day 2 — Federal income tax calculator
+### [~] Day 2 — Federal income tax calculator
 **Goal:** Calculate federal income tax withholding for a given gross income,
 filing status, and pay frequency.
 **Context:** Federal tax is the foundation everything else builds on. It must

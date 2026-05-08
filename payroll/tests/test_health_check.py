@@ -1,7 +1,6 @@
 """
-Payroll app tests.
-Tests are added here incrementally, one daily session at a time.
-Each test maps to an approved scenario in the functional plan.
+Payroll app tests — Day 1: health check endpoint.
+Moved from payroll/tests.py when the tests/ directory was introduced in Day 2.
 """
 from django.test import TestCase
 

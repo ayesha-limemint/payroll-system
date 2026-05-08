@@ -7,6 +7,23 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-08 — Day 2: Federal income tax calculator
+
+**Added**
+- `payroll/calculators/federal/calculator.py` — `calculate_federal_income_tax(gross_pay, filing_status, pay_frequency)`
+- IRS Percentage Method (Pub. 15-T 2024), annualisation approach
+- Filing statuses: `SINGLE`, `MARRIED_FILING_JOINTLY`
+- Pay frequencies: `WEEKLY` (52), `BI_WEEKLY` (26), `SEMI_MONTHLY` (24), `MONTHLY` (12)
+- 6 tests: standard bracket, zero withholding, 22% bracket, MFJ, top bracket (35%+37%), frequency consistency
+- `FEDERAL_TAX_YEAR = 2024` constant added to `rates.py`
+
+**Changed**
+- `payroll/tests.py` restructured to `payroll/tests/` directory; Day 1 tests moved to `test_health_check.py`
+
+*Annualisation method chosen deliberately over cumulative wages method — Ash reviewed the trade-off 2026-05-08.*
+
+---
+
 ## 2026-05-08 — Day 1: Health check endpoint
 
 **Added**

@@ -11,8 +11,23 @@ in your reasoning before producing any output:
 
 2. **What are the real-world rules?**
    For anything involving tax calculations: what does the actual law say?
-   Are the rates in `payroll/calculators/nj/rates.py` correct for this feature?
-   If uncertain, search for the authoritative source before proceeding.
+
+   **Rate verification is mandatory before writing this plan.**
+   Do not rely on `rates.py` without checking it first. The current date
+   is in your session context — use it to determine the current tax year.
+
+   Steps (complete these before writing a single line of the plan):
+   a. Compare `FEDERAL_TAX_YEAR` in `rates.py` against the current year.
+      If they differ, the file is presumed stale.
+   b. Search irs.gov for "Publication 15-T [current year]" and verify
+      federal brackets and standard deductions.
+   c. Check ssa.gov for the current-year Social Security wage base.
+   d. For NJ features: check nj.gov/labor for SDI/FLI/UI rates and
+      nj.gov/treasury for any NJ income tax changes.
+   e. If anything is stale: update `rates.py`, commit the correction,
+      then proceed. Note the sources used in the rates.py file header.
+
+   Only after rates are confirmed current should you write the plan.
 
 3. **What are the edge cases?**
    Think through at least 3 edge cases before writing scenarios.
