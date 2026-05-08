@@ -30,7 +30,7 @@ not just the what. This matters for planning decisions.
 
 ---
 
-### [ ] Day 1 — Health check endpoint
+### [~] Day 1 — Health check endpoint
 **Goal:** `GET /api/v1/health` returns `{"status": "ok", "service": "payroll-system"}`
 **Context:** Every API needs a health check. This also verifies the Django
 setup is correct, the URL routing works, DRF is configured, and CI is green

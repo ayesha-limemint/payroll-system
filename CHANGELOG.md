@@ -7,6 +7,17 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-08 — Day 1: Health check endpoint
+
+**Added**
+- `GET /api/v1/health/` returns `{"status": "ok", "service": "payroll-system"}` with HTTP 200
+- 3 tests in `payroll/tests.py` covering status code, status field, and service name — all passing
+- Feature branch `feature/2026-05-08-health-check` — PR open for review
+
+*The endpoint and tests were scaffolded in Session 0; this session confirmed the test suite passes cleanly and the API contract is correct.*
+
+---
+
 ## 2026-05-07 — Session 0: Project scaffold
 
 **Added**
