@@ -7,46 +7,52 @@ The research agent checks these against current published rates every ~2 months.
 Last verified: May 2026
 Sources:
   - NJ income tax: https://www.nj.gov/treasury/taxation/
-  - NJ SDI/FLI/UI: https://www.nj.gov/labor/
-  - Federal: https://www.irs.gov/
+  - NJ SDI/FLI/UI: https://www.nj.gov/labor/ea/employer-services/rate-info/
+  - Federal brackets/deductions: IRS Rev. Proc. 2025-32 (tax year 2026)
+  - Federal FICA: SSA contribution and benefit base announcement 2026
+  - One Big Beautiful Bill Act (P.L. 119-21): permanently extends TCJA bracket
+    structure; new tips/overtime/senior deductions are W-4 elections, not
+    employer-calculated — no change to withholding methodology.
 """
 
-FEDERAL_TAX_YEAR = 2024
+FEDERAL_TAX_YEAR = 2026
 
 # --- Federal Rates ---
 
 FEDERAL_BRACKETS_SINGLE = [
     # (upper_limit, rate) — last entry upper_limit=None means no cap
-    (11_600,   0.10),
-    (47_150,   0.12),
-    (100_525,  0.22),
-    (191_950,  0.24),
-    (243_725,  0.32),
-    (609_350,  0.35),
+    # Thresholds are 2026 inflation-adjusted figures (IRS Rev. Proc. 2025-32)
+    (12_400,   0.10),
+    (50_400,   0.12),
+    (105_700,  0.22),
+    (201_775,  0.24),
+    (256_225,  0.32),
+    (640_600,  0.35),
     (None,     0.37),
 ]
 
 FEDERAL_BRACKETS_MARRIED_FILING_JOINTLY = [
-    (23_200,   0.10),
-    (94_300,   0.12),
-    (201_050,  0.22),
-    (383_900,  0.24),
-    (487_450,  0.32),
-    (731_200,  0.35),
+    (24_800,   0.10),
+    (100_800,  0.12),
+    (211_400,  0.22),
+    (403_550,  0.24),
+    (512_450,  0.32),
+    (768_700,  0.35),
     (None,     0.37),
 ]
 
-FEDERAL_STANDARD_DEDUCTION_SINGLE = 14_600
-FEDERAL_STANDARD_DEDUCTION_MFJ = 29_200
+FEDERAL_STANDARD_DEDUCTION_SINGLE = 16_100
+FEDERAL_STANDARD_DEDUCTION_MFJ = 32_200
 
 # FICA
 SOCIAL_SECURITY_RATE = 0.062
-SOCIAL_SECURITY_WAGE_BASE = 168_600  # 2024
+SOCIAL_SECURITY_WAGE_BASE = 184_500  # 2026
 MEDICARE_RATE = 0.0145
 ADDITIONAL_MEDICARE_RATE = 0.009
 ADDITIONAL_MEDICARE_THRESHOLD_SINGLE = 200_000
 
 # --- New Jersey Rates ---
+# NJ income tax brackets and rates unchanged for 2026.
 
 NJ_BRACKETS_SINGLE = [
     (20_000,   0.014),
@@ -74,14 +80,14 @@ NJ_STANDARD_DEDUCTION_MFJ = 2_000
 NJ_PERSONAL_EXEMPTION_SINGLE = 1_000
 NJ_PERSONAL_EXEMPTION_MFJ = 2_000
 
-# NJ SDI (State Disability Insurance) — employee contribution
-NJ_SDI_RATE = 0.0009
-NJ_SDI_WAGE_BASE = 161_400  # 2024
+# NJ SDI (Temporary Disability Insurance) — employee contribution
+NJ_SDI_RATE = 0.0019       # 0.19% for 2026 (was 0.09% in 2024, 0.23% in 2025)
+NJ_SDI_WAGE_BASE = 171_100  # 2026 (was 161,400 in 2024)
 
 # NJ FLI (Family Leave Insurance) — employee contribution
-NJ_FLI_RATE = 0.0006
-NJ_FLI_WAGE_BASE = 161_400  # 2024
+NJ_FLI_RATE = 0.0023       # 0.23% for 2026 (was 0.06% in 2024, 0.33% in 2025)
+NJ_FLI_WAGE_BASE = 171_100  # 2026 (was 161,400 in 2024)
 
-# NJ UI/WF/SWF — employee contribution (UI + Workforce Development + Supplemental WD)
-NJ_UI_EMPLOYEE_RATE = 0.00425
-NJ_UI_WAGE_BASE = 42_300  # 2024
+# NJ UI/WF/SWF — employee contribution (UI 0.3825% + WF/SWF 0.0425% = 0.425%)
+NJ_UI_EMPLOYEE_RATE = 0.00425  # unchanged for 2026
+NJ_UI_WAGE_BASE = 44_800       # 2026 (was 42,300 in 2024)

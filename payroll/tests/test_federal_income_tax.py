@@ -17,12 +17,12 @@ class FederalIncomeTaxTest(TestCase):
 
     # --- Scenario 1 ---
     # Single filer, $1,000/week (annual $52,000).
-    # Taxable: 52000 - 14600 = 37400
-    # 10% x 11600 = 1160.00  |  12% x 25800 = 3096.00  |  annual = 4256.00
-    # Weekly: 4256.00 / 52 = 81.846... -> 81.85
+    # Taxable: 52000 - 16100 = 35900
+    # 10% x 12400 = 1240.00  |  12% x 23500 = 2820.00  |  annual = 4060.00
+    # Weekly: 4060.00 / 52 = 78.076... -> 78.08
     def test_single_weekly_standard(self):
         result = calculate_federal_income_tax(1000.00, "SINGLE", "WEEKLY")
-        self.assertEqual(result, 81.85)
+        self.assertEqual(result, 78.08)
 
     # --- Scenario 2 ---
     # Annualised income ($10,400) below standard deduction ($14,600).
@@ -33,31 +33,31 @@ class FederalIncomeTaxTest(TestCase):
 
     # --- Scenario 3 ---
     # Single filer, $2,000/week (annual $104,000) — firmly in 22% bracket.
-    # Taxable: 104000 - 14600 = 89400
-    # 10% x 11600 = 1160.00  |  12% x 35550 = 4266.00  |  22% x 42250 = 9295.00
-    # Annual = 14721.00  |  weekly = 14721.00 / 52 = 283.096... -> 283.10
+    # Taxable: 104000 - 16100 = 87900
+    # 10% x 12400 = 1240.00  |  12% x 38000 = 4560.00  |  22% x 37500 = 8250.00
+    # Annual = 14050.00  |  weekly = 14050.00 / 52 = 270.192... -> 270.19
     def test_single_in_22pct_bracket(self):
         result = calculate_federal_income_tax(2000.00, "SINGLE", "WEEKLY")
-        self.assertEqual(result, 283.10)
+        self.assertEqual(result, 270.19)
 
     # --- Scenario 4 ---
     # MFJ, $3,000 bi-weekly (annual $78,000).
-    # Taxable: 78000 - 29200 = 48800
-    # 10% x 23200 = 2320.00  |  12% x 25600 = 3072.00  |  annual = 5392.00
-    # Bi-weekly: 5392.00 / 26 = 207.384... -> 207.38
+    # Taxable: 78000 - 32200 = 45800
+    # 10% x 24800 = 2480.00  |  12% x 21000 = 2520.00  |  annual = 5000.00
+    # Bi-weekly: 5000.00 / 26 = 192.307... -> 192.31
     def test_mfj_biweekly(self):
         result = calculate_federal_income_tax(3000.00, "MARRIED_FILING_JOINTLY", "BI_WEEKLY")
-        self.assertEqual(result, 207.38)
+        self.assertEqual(result, 192.31)
 
     # --- Scenario 5 ---
     # Single, $31,250 semi-monthly (annual $750,000) — exercises 35% and 37%.
-    # Taxable: 750000 - 14600 = 735400
-    # 10%x11600=1160 | 12%x35550=4266 | 22%x53375=11742.50 | 24%x91425=21942
-    # 32%x51775=16568 | 35%x365625=127968.75 | 37%x126050=46638.50
-    # Annual = 230285.75  |  semi-monthly = 230285.75 / 24 = 9595.239... -> 9595.24
+    # Taxable: 750000 - 16100 = 733900
+    # 10%x12400=1240 | 12%x38000=4560 | 22%x55300=12166 | 24%x96075=23058
+    # 32%x54450=17424 | 35%x384375=134531.25 | 37%x93300=34521
+    # Annual = 227500.25  |  semi-monthly = 227500.25 / 24 = 9479.177... -> 9479.18
     def test_single_top_bracket(self):
         result = calculate_federal_income_tax(31250.00, "SINGLE", "SEMI_MONTHLY")
-        self.assertEqual(result, 9595.24)
+        self.assertEqual(result, 9479.18)
 
     # --- Scenario 6 ---
     # Same annual income ($52,000, SINGLE) across all four frequencies.
