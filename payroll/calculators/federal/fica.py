@@ -1,9 +1,9 @@
 """
 FICA employee contribution calculator.
 
-Social Security: 6.2% on gross wages up to the annual wage base (per-period
-cap = SOCIAL_SECURITY_WAGE_BASE / pay_periods). No YTD tracking — each period
-calculated independently (deliberate; see backlog Day 3 notes).
+Social Security: 6.2% on gross wages up to the annual wage base, minus any
+wages already subject to SS this year (ytd_gross). The $184,500 cap is annual
+and cumulative — not a per-period limit.
 
 Medicare: 1.45% on all gross wages, no cap.
 
@@ -13,29 +13,22 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from payroll.calculators.nj import rates
 
-PAY_PERIODS = {
-    "WEEKLY": 52,
-    "BI_WEEKLY": 26,
-    "SEMI_MONTHLY": 24,
-    "MONTHLY": 12,
-}
 
-
-def calculate_fica(gross_pay, pay_frequency):
+def calculate_fica(gross_pay, ytd_gross=0):
     """
     Return Social Security and Medicare employee contributions for one pay period.
 
-    gross_pay      -- gross pay for this period (float or Decimal, dollars)
-    pay_frequency  -- "WEEKLY", "BI_WEEKLY", "SEMI_MONTHLY", or "MONTHLY"
+    gross_pay  -- gross pay for this period (float or Decimal, dollars)
+    ytd_gross  -- total gross wages already paid this calendar year before this
+                  period (default 0 — i.e. first paycheck of the year)
 
     Returns dict: {"social_security": Decimal, "medicare": Decimal}
-    Raises KeyError if pay_frequency is not recognised (validation deferred to API layer).
     """
     gross = Decimal(str(gross_pay))
-    periods = PAY_PERIODS[pay_frequency]
+    ytd = Decimal(str(ytd_gross))
 
-    per_period_cap = Decimal(str(rates.SOCIAL_SECURITY_WAGE_BASE)) / periods
-    ss_wages = min(gross, per_period_cap)
+    ss_eligible = max(Decimal("0"), Decimal(str(rates.SOCIAL_SECURITY_WAGE_BASE)) - ytd)
+    ss_wages = min(gross, ss_eligible)
 
     social_security = (ss_wages * Decimal(str(rates.SOCIAL_SECURITY_RATE))).quantize(
         Decimal("0.01"), rounding=ROUND_HALF_UP

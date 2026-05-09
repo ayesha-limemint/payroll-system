@@ -10,13 +10,15 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 ## 2026-05-09 — Day 3: FICA contributions
 
 **Added**
-- `payroll/calculators/federal/fica.py` — `calculate_fica(gross_pay, pay_frequency)`
+- `payroll/calculators/federal/fica.py` — `calculate_fica(gross_pay, ytd_gross=0)`
 - Returns `{"social_security": Decimal, "medicare": Decimal}` per pay period
-- Social Security: 6.2% on gross up to per-period equivalent of $184,500 annual wage base (2026, SSA-verified)
+- Social Security: 6.2% on `min(gross_pay, max(0, SOCIAL_SECURITY_WAGE_BASE - ytd_gross))` — correct annual cumulative cap
 - Medicare: 1.45% on all gross wages, no cap
-- Pay frequencies: `WEEKLY` (52), `BI_WEEKLY` (26), `SEMI_MONTHLY` (24), `MONTHLY` (12)
-- 5 tests: below cap (weekly), at cap (monthly, exact boundary), above cap (SS capped / Medicare full), bi-weekly, zero income
-- 21 tests total — full regression clean
+- `ytd_gross` defaults to 0 (first paycheck of year); callers supply YTD for mid-year accuracy
+- 6 tests: no prior earnings (weekly), within remaining cap, exceeds remaining cap (SS truncated / Medicare full), wage base exhausted, zero income, bi-weekly no prior earnings
+- 22 tests total — full regression clean
+
+**Design correction:** Initial plan used a per-period cap (wage_base / pay_periods). Ash correctly identified this as inaccurate for mid-year hires, bonuses, and variable pay. Revised to proper YTD cumulative approach. `pay_frequency` removed from signature (unused once per-period approximation is gone).
 
 *FICA turns out to be the most honest tax in the system — flat rates, one wage base, and it stops when it has enough. The wage base stops Social Security but not Medicare. Congress was specific about that distinction. — Milton*
 
