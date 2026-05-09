@@ -139,8 +139,10 @@ Written: YYYY-MM-DD HH:MM UTC
 [Completed after Pass A — playbook scan + Superpowers prompts from agents/instructions/superpowers_crosscheck_prompts.md]
 ```
 
-After saving **Pass A and Pass B**, send Ash a Gmail notification:
-- Subject: `[Milton] Functional plan ready for review — YYYY-MM-DD`
-- Body: one-paragraph summary + direct Drive link
+After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
+```
+[Milton] Functional plan written — YYYY-MM-DD
+<Drive link to 01_functional_plan.md>
+```
 
-Then exit. Wait for approval before proceeding.
+Then proceed immediately to Phase 5 (technical plan). Do not exit or wait.
