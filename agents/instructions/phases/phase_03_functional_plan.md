@@ -147,4 +147,4 @@ After saving **Pass A and Pass B**, send Ash a Slack notification (see Notificat
 <Drive link to 01_functional_plan.md>
 ```
 
-Then exit. Wait for approval before proceeding.
+Then proceed immediately to Phase 5 (technical plan). Do not exit or wait.

@@ -13,8 +13,8 @@ does as much work as it can, and exits. It does not poll or wait.
 Every run is stateless. All state lives in Google Drive and GitHub.
 
 Each run either:
-- Advances the current session by one phase, or
-- Sends a nudge/reminder if waiting for Ash's approval, and exits
+- Runs the full session from planning through to PR and completion notification, or
+- Sends a nudge and exits if blocked on unanswered questions (Phase 2a only)
 
 ---
 
@@ -53,11 +53,11 @@ never starts until the previous one reaches Status: COMPLETE.**
 
 | Phase | File | Description |
 |-------|------|-------------|
-| 2a | [phase_02a_questions.md](phases/phase_02a_questions.md) | Questions pending — check for `(Ash)` answers in `00_questions.md`, nudge if none, proceed if resolved |
-| 3 | [phase_03_functional_plan.md](phases/phase_03_functional_plan.md) | Write functional plan (or questions doc if clarification needed) → notify Ash → exit |
-| 4 | [phase_04_functional_approval.md](phases/phase_04_functional_approval.md) | Check approval status → proceed or nudge/revise → exit |
-| 5 | [phase_05_technical_plan.md](phases/phase_05_technical_plan.md) | Write technical plan → notify Ash → exit |
-| 6 | [phase_06_technical_approval.md](phases/phase_06_technical_approval.md) | Check approval status → proceed or nudge/revise → exit |
+| 2a | [phase_02a_questions.md](phases/phase_02a_questions.md) | Questions pending — check for `(Ash)` answers in `00_questions.md`, nudge if none, proceed if resolved. **Only phase that blocks and exits.** |
+| 3 | [phase_03_functional_plan.md](phases/phase_03_functional_plan.md) | Write functional plan → notify Ash → proceed immediately to Phase 5 |
+| ~~4~~ | ~~phase_04_functional_approval.md~~ | ~~Retired~~ — no approval gate |
+| 5 | [phase_05_technical_plan.md](phases/phase_05_technical_plan.md) | Write technical plan → notify Ash → proceed immediately to Phase 7 |
+| ~~6~~ | ~~phase_06_technical_approval.md~~ | ~~Retired~~ — no approval gate |
 | 7 | [phase_07_create_branch.md](phases/phase_07_create_branch.md) | Create feature branch |
 | 8 | [phase_08_write_tests.md](phases/phase_08_write_tests.md) | Write failing tests [RED] |
 | 9 | [phase_09_implement.md](phases/phase_09_implement.md) | Implement until tests pass [GREEN] |
@@ -96,6 +96,5 @@ curl -s -X POST "$SLACK_WEBHOOK_URL" \
 
 Message format:
 - Lead with `[Milton]`
-- One sentence on what happened, then optionally one brief dry observation — never more
 - Always append the relevant Drive or GitHub URL on a new line
 - Example: `"[Milton] Functional plan ready. FICA is mercifully simple — two rates, one cap, zero brackets. Good news: this one fits on a page.\nhttps://drive.google.com/..."`

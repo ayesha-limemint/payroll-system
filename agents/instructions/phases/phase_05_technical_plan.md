@@ -61,8 +61,8 @@ Save to Drive: `daily_briefs/YYYY-MM-DD/02_technical_plan.md` (include Pass B in
 
 After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
 ```
-[Milton] Technical plan ready for review — YYYY-MM-DD
+[Milton] Technical plan written — YYYY-MM-DD
 <Drive link to 02_technical_plan.md>
 ```
 
-Then exit. Wait for approval before proceeding.
+Then proceed immediately to Phase 7 (create feature branch). Do not exit or wait.

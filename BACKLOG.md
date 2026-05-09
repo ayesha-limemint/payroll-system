@@ -60,13 +60,13 @@ semi-monthly, monthly).
 ### [~] Day 3 — FICA contributions
 **Goal:** Calculate Social Security and Medicare employee contributions.
 **Context:** FICA is straightforward but has two important constraints:
-Social Security has a wage base cap ($168,600 for 2024 — in rates.py).
-Medicare has no cap but has an Additional Medicare Tax at high incomes
-(0.9% over $200k single / $250k MFJ) — however, defer the additional
-Medicare tax to a later day. Keep this day focused on the base rates only.
-Both are a flat percentage of gross — no brackets, no deductions.
-**Acceptance:** Tests covering wage below cap, wage at cap, wage above cap
-for Social Security. Basic Medicare on various income levels.
+Social Security has an annual wage base cap ($184,500 for 2026 — in rates.py).
+The cap is cumulative: the calculator requires `ytd_gross` (year-to-date gross
+wages before this period) to determine how much of the wage base remains.
+Medicare (1.45%) has no wage base cap — it applies to every dollar of gross.
+The Additional Medicare Tax (0.9% above $200k) is deferred to Phase 2.
+**Acceptance:** Tests covering wage below cap, gross exceeding remaining cap
+(SS truncated, Medicare full), wage base already exhausted, and zero income.
 **Out of scope:** Additional Medicare Tax (deferred), pre-tax deductions.
 **Depends on:** Day 1 complete.
 
@@ -90,14 +90,17 @@ bracket boundaries, and the top bracket.
 ### [ ] Day 5 — NJ SDI, FLI, and UI contributions
 **Goal:** Calculate NJ State Disability Insurance, Family Leave Insurance,
 and Unemployment Insurance employee contributions.
-**Context:** All three are flat rates on gross wages up to a wage base
-(all use the same $161,400 base for 2024, except UI which uses $42,300).
-Rates are in rates.py. These are simple calculations but they must respect
-the wage base — once gross YTD exceeds the wage base, contributions stop.
-For now, assume no YTD tracking — calculate as if every pay period is
-within the wage base. YTD tracking is a future item.
-**Acceptance:** Tests covering wages below and above each wage base.
-**Out of scope:** YTD wage base tracking, employer contributions.
+**Context:** All three are flat rates on gross wages up to an annual wage base
+(SDI and FLI share $171,100 for 2026; UI uses $44,800 for 2026 — all in rates.py).
+The caps are cumulative, exactly like Social Security in Day 3: the calculator
+requires `ytd_gross` to determine how much of each wage base remains this year.
+Use the same pattern as `calculate_fica`: `eligible = max(0, wage_base - ytd_gross)`,
+then `contribution_wages = min(gross_pay, eligible)`.
+Note that SDI, FLI, and UI have different wage bases, so all three caps are applied
+independently against the same `ytd_gross` value.
+**Acceptance:** Tests covering wages below each cap, gross exceeding each remaining
+cap (contributions truncated), caps already exhausted, and zero income.
+**Out of scope:** Employer contributions (employer pays separate UI/SDI rates).
 **Depends on:** Day 1 complete.
 
 ---
@@ -108,6 +111,10 @@ a complete gross-to-net breakdown.
 **Context:** This is the main API endpoint — the reason the system exists.
 External agents (CloudCoreWorks etc.) will call it, so the schema must be
 clean, self-documenting, and extensible to additional states.
+`ytd_gross` is a required input: FICA (Day 3) and NJ SDI/FLI/UI (Day 5) both
+need it to apply their annual wage base caps correctly. The API passes it through
+to each calculator. Callers (payroll systems, integrations) are responsible for
+supplying the correct YTD figure for each employee.
 
 Schema design is informed by industry research (Symmetry, PayrollTax, Gusto,
 Finch, API Ninjas). The conventions below are deliberate — follow them exactly.
@@ -119,6 +126,18 @@ Finch, API Ninjas). The conventions below are deliberate — follow them exactly
   "pay_frequency": "biweekly",
   "filing_status": "single",
   "state": "NJ",
+  "ytd_gross": "45000.00",
+  "pay_date": "2026-05-15"
+}
+```
+`ytd_gross` — total gross wages paid to this employee so far this calendar year,
+before this paycheck. Required. Use "0.00" for the first paycheck of the year.
+`pay_date` is optional (defaults to current date, determines `tax_year`).
+**Acceptance:** End-to-end tests covering a complete NJ payroll calculation,
+verifying every line item in the response. Schema shape validated (all keys
+present, correct types, decimal string format). At least one test with
+mid-year ytd_gross that exercises the SS wage base cap.
+**Out of scope:** Authentication, pre-tax deductions.
   "pay_date": "2026-05-15"
 }
 ```
@@ -194,6 +213,9 @@ beyond basic readable HTML.
 **Context:** Deferred from Day 3. Applies to wages over $200,000 (single)
 or $250,000 (MFJ). Employers withhold on wages over $200,000 regardless
 of filing status — the employee reconciles at tax time.
+`ytd_gross` is already in the API (Day 6) and calculator signatures, so this
+calculator can simply check `if ytd_gross + gross_pay > 200_000` to determine
+whether and how much additional Medicare applies this period. No new parameters needed.
 **Depends on:** Day 3 complete.
 
 ---
@@ -238,7 +260,7 @@ is a positive number, state is a supported state.
 These items are defined so Milton understands the direction, but no
 session should be started on them until Phase 2 is complete.
 
-- [ ] YTD wage base tracking (SS cap, SDI/FLI/UI caps across pay periods)
+- [ ] Annual W-2 reconciliation / cumulative accuracy (per-paycheck YTD is in place from Day 3; this covers full-year cross-period verification and edge cases like mid-year starts)
 - [ ] NJ part-year resident handling
 - [ ] Additional states (PA, NY, CA) — architecture is ready
 - [ ] Batch / multi-employee payroll calculations
