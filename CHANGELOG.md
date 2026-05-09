@@ -7,6 +7,21 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-09 — Day 3: FICA contributions
+
+**Added**
+- `payroll/calculators/federal/fica.py` — `calculate_fica(gross_pay, pay_frequency)`
+- Returns `{"social_security": Decimal, "medicare": Decimal}` per pay period
+- Social Security: 6.2% on gross up to per-period equivalent of $184,500 annual wage base (2026, SSA-verified)
+- Medicare: 1.45% on all gross wages, no cap
+- Pay frequencies: `WEEKLY` (52), `BI_WEEKLY` (26), `SEMI_MONTHLY` (24), `MONTHLY` (12)
+- 5 tests: below cap (weekly), at cap (monthly, exact boundary), above cap (SS capped / Medicare full), bi-weekly, zero income
+- 21 tests total — full regression clean
+
+*FICA turns out to be the most honest tax in the system — flat rates, one wage base, and it stops when it has enough. The wage base stops Social Security but not Medicare. Congress was specific about that distinction. — Milton*
+
+---
+
 ## 2026-05-08 — Day 2: Federal income tax calculator
 
 **Added**
