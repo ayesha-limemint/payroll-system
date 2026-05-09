@@ -7,6 +7,22 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-09 — Day 4: NJ state income tax calculator
+
+**Added**
+- `payroll/calculators/nj/nj_income_tax.py` — `calculate_nj_income_tax(gross_pay, filing_status, pay_frequency)`
+- Returns a `Decimal` — NJ withholding for one pay period, rounded to 2dp (ROUND_HALF_UP)
+- Algorithm: annualise gross pay → subtract standard deduction ($1,000 single / $2,000 MFJ) AND personal exemption ($1,000 / $2,000) → apply NJ progressive brackets → divide by pay periods
+- Filing statuses: `SINGLE`, `MARRIED_FILING_JOINTLY`
+- Pay frequencies: `WEEKLY` (52), `BI_WEEKLY` (26), `SEMI_MONTHLY` (24), `MONTHLY` (12)
+- NJ brackets (2026): 7 levels for single (1.4% → 10.75%), 8 levels for MFJ (1.4% → 10.75%)
+- 6 tests: SINGLE weekly, MFJ bi-weekly, SINGLE monthly top bracket (10.75%), MFJ semi-monthly, bracket boundary at $40k taxable, zero gross
+- 28 tests total — full regression clean
+
+*NJ turns out to have more bracket layers than federal — seven for single filers, topping out at 10.75% above $1M. The combination of standard deduction plus personal exemption is the trap; the test at exactly $40,000 taxable is there for exactly that reason. — Milton*
+
+---
+
 ## 2026-05-09 — Day 3: FICA contributions
 
 **Added**
