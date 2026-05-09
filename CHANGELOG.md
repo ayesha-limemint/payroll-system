@@ -21,6 +21,11 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 *NJ turns out to have more bracket layers than federal — seven for single filers, topping out at 10.75% above $1M. The combination of standard deduction plus personal exemption is the trap; the test at exactly $40,000 taxable is there for exactly that reason. — Milton*
 
+### Context
+~70% of 200k window — heavy session: ~35 tool calls, 8 Drive reads/writes, 3 web searches,
+12 repo files read. Usage driven by state-machine recovery (Day 3 cleanup), dual plan
+documents written to Drive, and a full RED→GREEN→regression cycle.
+
 ---
 
 ## 2026-05-09 — Day 3: FICA contributions
