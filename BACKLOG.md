@@ -103,16 +103,71 @@ within the wage base. YTD tracking is a future item.
 ---
 
 ### [ ] Day 6 — Core gross-to-net API endpoint
-**Goal:** `POST /api/v1/calculate` wires all calculators together and returns
+**Goal:** `POST /api/v1/calculate/` wires all calculators together and returns
 a complete gross-to-net breakdown.
 **Context:** This is the main API endpoint — the reason the system exists.
-It takes gross pay, filing status, pay frequency, and state (NJ for now)
-and returns every deduction itemised. The response must be clean and
-well-documented because external agents (CloudCoreWorks etc.) will call this.
-Design the request/response schema carefully — it needs to be extensible
-when more states are added.
+External agents (CloudCoreWorks etc.) will call it, so the schema must be
+clean, self-documenting, and extensible to additional states.
+
+Schema design is informed by industry research (Symmetry, PayrollTax, Gusto,
+Finch, API Ninjas). The conventions below are deliberate — follow them exactly.
+
+**Request schema:**
+```json
+{
+  "gross_pay": "5000.00",
+  "pay_frequency": "biweekly",
+  "filing_status": "single",
+  "state": "NJ",
+  "pay_date": "2026-05-15"
+}
+```
+`pay_date` is optional (defaults to current date, determines `tax_year`).
+`tax_year` is also accepted as an integer override, consistent with Day 2.
+
+**Response schema — 200 OK:**
+```json
+{
+  "gross_pay": "5000.00",
+  "net_pay": "3612.45",
+  "pay_frequency": "biweekly",
+  "filing_status": "single",
+  "state": "NJ",
+  "tax_year": 2026,
+  "taxes": [
+    {"code": "federal_income_tax", "name": "Federal Income Tax",  "amount": "712.00"},
+    {"code": "social_security",    "name": "Social Security",     "amount": "310.00"},
+    {"code": "medicare",           "name": "Medicare",            "amount": "72.50"},
+    {"code": "nj_income_tax",      "name": "NJ State Income Tax", "amount": "175.00"},
+    {"code": "nj_sdi",             "name": "NJ SDI",              "amount": "45.00"},
+    {"code": "nj_fli",             "name": "NJ FLI",              "amount": "18.00"},
+    {"code": "nj_ui",              "name": "NJ UI",               "amount": "55.05"}
+  ],
+  "total_taxes": "1387.55",
+  "deductions": []
+}
+```
+
+Key decisions:
+- All currency as **decimal strings** (`"712.00"`) — avoids floating-point drift
+- Taxes as an **array of objects** `{code, name, amount}`, not flat fields —
+  flat fields break when local taxes or additional Medicare are added later
+- Tax order: federal income → FICA (SS, Medicare) → state income → state contributions
+- `deductions` always present even when empty — Phase 2 pre-tax deductions
+  populate it without a schema break
+- Key inputs echoed in response — aids debugging and makes responses self-documenting
+- `filing_status` values: `single`, `married_filing_jointly`,
+  `married_filing_separately`, `head_of_household`
+- `pay_frequency` values: `weekly`, `biweekly`, `semi_monthly`, `monthly`
+- State: two-letter uppercase (`NJ`)
+- Dates: ISO 8601 (`2026-05-15`)
+
+See `agents/instructions/payroll_system_architecture.md` — "Response schema conventions"
+section — for the canonical reference used in Pass B cross-checks.
+
 **Acceptance:** End-to-end tests covering a complete NJ payroll calculation,
-verifying every line item in the response. Schema validated.
+verifying every field and line item in the response against known-correct values.
+Schema shape validated (all keys present, correct types, decimal string format).
 **Out of scope:** Authentication, pre-tax deductions, YTD tracking.
 **Depends on:** Days 2, 3, 4, 5 all complete.
 

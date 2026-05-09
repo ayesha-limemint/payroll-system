@@ -2,6 +2,8 @@
 API views for the payroll system.
 Built incrementally ? one endpoint per daily session.
 """
+from decimal import Decimal, InvalidOperation
+
 from django.utils.dateparse import parse_date
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -38,10 +40,10 @@ def federal_income_tax(request):
     """
     data = request.data
     try:
-        gross_pay = float(data["gross_pay"])
+        gross_pay = Decimal(str(data["gross_pay"]))
         filing_status = data["filing_status"]
         pay_frequency = data["pay_frequency"]
-    except (KeyError, TypeError, ValueError):
+    except (KeyError, TypeError, InvalidOperation):
         return Response(
             {"detail": "gross_pay, filing_status, and pay_frequency are required and valid."},
             status=status.HTTP_400_BAD_REQUEST,
@@ -70,7 +72,7 @@ def federal_income_tax(request):
 
     return Response(
         {
-            "federal_income_tax": amount,
+            "federal_income_tax": str(amount),
             "tax_year_used": year,
         },
         status=status.HTTP_200_OK,
