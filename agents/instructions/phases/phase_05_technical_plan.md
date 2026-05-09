@@ -59,8 +59,10 @@ Read:
 Fill in the template exactly. Do not free-form it.
 Save to Drive: `daily_briefs/YYYY-MM-DD/02_technical_plan.md` (include Pass B in the same file).
 
-After saving **Pass A and Pass B**, send Ash a Gmail notification:
-- Subject: `[Milton] Technical plan ready for review — YYYY-MM-DD`
-- Body: one-paragraph summary + direct Drive link
+After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
+```
+[Milton] Technical plan ready for review — YYYY-MM-DD
+<Drive link to 02_technical_plan.md>
+```
 
 Then exit. Wait for approval before proceeding.

@@ -84,6 +84,18 @@ See [phases/failure_handling.md](phases/failure_handling.md)
 
 ## Notification Rules
 
-All emails go to: ayesha@limemint.ai
-All subjects prefixed with: `[Milton]`
-Body: one paragraph maximum, always include a direct Drive or GitHub link.
+All notifications go to the `#payroll-agent` Slack channel via incoming webhook.
+Webhook URL is in `.env` as `SLACK_WEBHOOK_URL` — never hardcode it.
+
+Standard send command (use this in every phase):
+```bash
+curl -s -X POST "$SLACK_WEBHOOK_URL" \
+  -H "Content-Type: application/json" \
+  -d "{\"text\": \"<message>\"}"
+```
+
+Message format:
+- Lead with `[Milton]`
+- One sentence on what happened, then optionally one brief dry observation — never more
+- Always append the relevant Drive or GitHub URL on a new line
+- Example: `"[Milton] Functional plan ready. FICA is mercifully simple — two rates, one cap, zero brackets. Good news: this one fits on a page.\nhttps://drive.google.com/..."`
