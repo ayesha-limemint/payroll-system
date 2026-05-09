@@ -26,6 +26,6 @@ Example of an answered question:
 ## If ANY question is still unanswered
 
 - Check the Written: timestamp in the doc
-- Less than 24 hours ago → send nudge: `[Milton] Waiting on your answers before I can plan — YYYY-MM-DD`
-- More than 24 hours ago → send reminder: `[Milton] Reminder: questions still awaiting your answers — YYYY-MM-DD`
+- Less than 24 hours ago → send Slack nudge: `[Milton] Waiting on your answers before I can plan — YYYY-MM-DD` + Drive link
+- More than 24 hours ago → send Slack reminder: `[Milton] Reminder: questions still awaiting your answers — YYYY-MM-DD` + Drive link
 - Exit either way. Do not write the functional plan until all questions are answered.

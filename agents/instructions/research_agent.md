@@ -103,13 +103,19 @@ Research report: [Drive link]
 
 ## Step 6 — Notify Ash
 
-Send Gmail notification to ayesha@limemint.ai
+Send a Slack notification via the webhook in `$SLACK_WEBHOOK_URL` (see Notification Rules in `daily_agent.md`).
 
 If no changes needed:
-Subject: `[Payroll Research Agent] All tax rates current — YYYY-MM-DD`
-Body: "Research complete. All implemented rates match current published rates. Full report: [link]"
+```
+[Milton] All tax rates current — YYYY-MM-DD
+Research complete. All implemented rates match current published rates.
+<Drive link to research report>
+```
 
 If changes needed:
-Subject: `[Payroll Research Agent] Tax rate updates required — YYYY-MM-DD`
-Body: "Research found X discrepancies. An update request has been created. Full report: [link]. The daily agent will pick this up in the next session."
+```
+[Milton] Tax rate updates required — YYYY-MM-DD
+Found X discrepancies. Update request created — daily agent will pick it up next session.
+<Drive link to research report>
+```
 

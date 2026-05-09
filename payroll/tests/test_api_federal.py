@@ -7,6 +7,7 @@ from payroll.calculators.federal.calculator import calculate_federal_income_tax
 from payroll.calculators.nj import rates
 
 
+
 class FederalIncomeTaxAPITest(TestCase):
     def test_defaults_to_active_tax_year(self):
         response = self.client.post(
@@ -24,7 +25,7 @@ class FederalIncomeTaxAPITest(TestCase):
         body = response.json()
         expected = calculate_federal_income_tax(1000.0, "SINGLE", "WEEKLY")
         self.assertEqual(body["tax_year_used"], rates.FEDERAL_TAX_YEAR)
-        self.assertEqual(body["federal_income_tax"], expected)
+        self.assertEqual(body["federal_income_tax"], str(expected))
 
     def test_pay_date_selects_schedule_year(self):
         response = self.client.post(
@@ -45,7 +46,7 @@ class FederalIncomeTaxAPITest(TestCase):
             1000.0, "SINGLE", "WEEKLY", tax_year=2025
         )
         self.assertEqual(body["tax_year_used"], 2025)
-        self.assertEqual(body["federal_income_tax"], expected)
+        self.assertEqual(body["federal_income_tax"], str(expected))
 
     def test_tax_year_conflicts_with_pay_date_returns_400(self):
         ty = rates.FEDERAL_TAX_YEAR

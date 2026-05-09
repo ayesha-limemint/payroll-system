@@ -12,5 +12,9 @@ Rules that apply across all phases. When in doubt, stop and notify — never gue
 
 ## Blocker notification format
 
-Subject: `[Payroll Agent] Blocked — needs your input — YYYY-MM-DD`
-Body: one paragraph describing exactly what the blocker is + link to the Drive daily brief
+Send via Slack webhook (see Notification Rules in `daily_agent.md`):
+```
+[Milton] Blocked — needs your input — YYYY-MM-DD
+<one sentence: what exactly is blocked>
+<Drive link to daily brief>
+```
