@@ -28,16 +28,18 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 **Added**
 - `payroll/calculators/federal/calculator.py` — `calculate_federal_income_tax(gross_pay, filing_status, pay_frequency)`
-- IRS Percentage Method (Pub. 15-T 2024), annualisation approach
+- IRS Percentage Method (Pub. 15-T), annualisation approach — annualise gross, apply brackets, divide back down
 - Filing statuses: `SINGLE`, `MARRIED_FILING_JOINTLY`
 - Pay frequencies: `WEEKLY` (52), `BI_WEEKLY` (26), `SEMI_MONTHLY` (24), `MONTHLY` (12)
 - 6 tests: standard bracket, zero withholding, 22% bracket, MFJ, top bracket (35%+37%), frequency consistency
-- `FEDERAL_TAX_YEAR = 2024` constant added to `rates.py`
+- `FEDERAL_TAX_YEAR` constant in `rates.py` — policy test ensures it tracks the current calendar year
 
 **Changed**
 - `payroll/tests.py` restructured to `payroll/tests/` directory; Day 1 tests moved to `test_health_check.py`
 
-*Annualisation method chosen deliberately over cumulative wages method — Ash reviewed the trade-off 2026-05-08.*
+*Congress has had since 1913 to simplify the federal bracket structure and has elected not to.
+Annualisation method chosen over cumulative wages — Ash reviewed the trade-off 2026-05-08.
+The 37% bracket is implemented and tested. It remains, as ever, someone else's problem.*
 
 ---
 
@@ -45,10 +47,10 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 **Added**
 - `GET /api/v1/health/` returns `{"status": "ok", "service": "payroll-system"}` with HTTP 200
-- 3 tests in `payroll/tests.py` covering status code, status field, and service name — all passing
-- Feature branch `feature/2026-05-08-health-check` — PR open for review
+- 3 tests covering status code, status field, and service name — all passing
 
-*The endpoint and tests were scaffolded in Session 0; this session confirmed the test suite passes cleanly and the API contract is correct.*
+*Every API needs a health check. This one does exactly what it says and nothing more,
+which makes it the most honest endpoint we will ever write.*
 
 ---
 

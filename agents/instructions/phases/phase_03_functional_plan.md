@@ -80,9 +80,11 @@ Written: YYYY-MM-DD HH:MM UTC
 **Q2:** [Your question]
 ```
 
-Send Ash a Gmail notification:
-- Subject: `[Milton] Questions before I can plan — YYYY-MM-DD`
-- Body: brief summary of what you need to know + direct Drive link
+Send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
+```
+[Milton] Questions before I can plan — YYYY-MM-DD
+<Drive link to 00_questions.md>
+```
 
 Then exit. Do not write the functional plan until answers arrive.
 
@@ -141,7 +143,7 @@ Written: YYYY-MM-DD HH:MM UTC
 
 After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
 ```
-[Milton] Functional plan written — YYYY-MM-DD
+[Milton] Functional plan ready for review — YYYY-MM-DD
 <Drive link to 01_functional_plan.md>
 ```
 

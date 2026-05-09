@@ -12,7 +12,7 @@ If any existing test breaks:
 4. Re-run the full suite
 5. If still failing after 2 fix attempts:
    - Document the failure in the daily brief on Drive
-   - Send Ash a blocker notification: `[Payroll Agent] Blocked — regression failure — YYYY-MM-DD`
+   - Send Ash a Slack blocker notification: `[Milton] Blocked — regression failure — YYYY-MM-DD` + Drive link
    - Do NOT push broken code
    - Exit
 

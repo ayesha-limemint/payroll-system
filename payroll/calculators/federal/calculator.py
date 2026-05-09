@@ -5,6 +5,8 @@ Method: IRS Percentage Method, Publication 15-T. Each pay period is calculated
 independently via annualisation ? no YTD tracking. Schedule selection uses
 `tax_year` (defaults to `rates.FEDERAL_TAX_YEAR`).
 """
+from decimal import ROUND_HALF_UP, Decimal
+
 from payroll.calculators.nj import rates
 
 PAY_PERIODS = {
@@ -44,11 +46,18 @@ def calculate_federal_income_tax(
     standard = sched[std_key]
     brackets = sched[br_key]
 
+    gross_pay = Decimal(str(gross_pay))
+    standard = Decimal(str(standard))
+    decimal_brackets = [
+        (Decimal(str(upper)) if upper is not None else None, Decimal(str(rate)))
+        for upper, rate in brackets
+    ]
+
     periods = PAY_PERIODS[pay_frequency]
     annual_gross = gross_pay * periods
-    taxable = max(0.0, annual_gross - standard)
-    annual_tax = _apply_brackets(taxable, brackets)
-    return round(annual_tax / periods, 2)
+    taxable = max(Decimal("0"), annual_gross - standard)
+    annual_tax = _apply_brackets(taxable, decimal_brackets)
+    return (annual_tax / periods).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
 def resolve_federal_tax_year(tax_year=None, pay_date=None):
@@ -73,8 +82,8 @@ def resolve_federal_tax_year(tax_year=None, pay_date=None):
 
 def _apply_brackets(income, brackets):
     """Apply a progressive bracket schedule to taxable income."""
-    tax = 0.0
-    prev = 0.0
+    tax = Decimal("0")
+    prev = Decimal("0")
     for upper, rate in brackets:
         if upper is None:
             tax += (income - prev) * rate

@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "mcp__3ce32549-f6f0-4c23-884b-a194d56d7cc7__copy_file"
+      "mcp__3ce32549-f6f0-4c23-884b-a194d56d7cc7__copy_file",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\ayesh\\\\OneDrive\\\\Documents\\\\Claude\\\\Projects\\\\Payroll System\\\\payroll-system\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(python manage.py test payroll --verbosity=2)"
     ]
   }
 }

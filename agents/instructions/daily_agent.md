@@ -96,5 +96,5 @@ curl -s -X POST "$SLACK_WEBHOOK_URL" \
 
 Message format:
 - Lead with `[Milton]`
-- One sentence on what happened, then optionally one brief dry observation — never more
 - Always append the relevant Drive or GitHub URL on a new line
+- Example: `"[Milton] Functional plan ready. FICA is mercifully simple — two rates, one cap, zero brackets. Good news: this one fits on a page.\nhttps://drive.google.com/..."`
