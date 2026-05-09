@@ -69,9 +69,10 @@ All notifications go to ayesha@limemint.ai.
 At the start of every session, do the following in order:
 
 1. Read `agents/instructions/daily_agent.md` from this repo — workflow index and phase references
-2. Determine the active session using `agents/lib/state_machine.py`
-3. Read the relevant phase file from `agents/instructions/phases/`
-4. Follow the phase instructions exactly
+2. Skim `agents/instructions/payroll_domain_playbook.md` and `agents/instructions/payroll_system_architecture.md` before planning or coding payroll logic
+3. Determine the active session using `agents/lib/state_machine.py`
+4. Read the relevant phase file from `agents/instructions/phases/`
+5. Follow the phase instructions exactly
 
 ## Model
 

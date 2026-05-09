@@ -68,6 +68,14 @@ never starts until the previous one reaches Status: COMPLETE.**
 
 ---
 
+## Domain and architecture references
+
+Before Phase 3 / 5 Pass B cross-checks:
+
+- [payroll_domain_playbook.md](payroll_domain_playbook.md)
+- [payroll_system_architecture.md](payroll_system_architecture.md)
+- [superpowers_crosscheck_prompts.md](superpowers_crosscheck_prompts.md)
+
 ## Failure Handling
 
 See [phases/failure_handling.md](phases/failure_handling.md)

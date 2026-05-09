@@ -4,13 +4,14 @@ Day 2 — Federal income tax calculator tests.
 Each test maps to an approved scenario in the functional plan
 (daily_briefs/2026-05-08-day2/01_functional_plan.md).
 
-Withholding method: IRS Percentage Method (Publication 15-T 2024),
+Withholding method: IRS Percentage Method (Publication 15-T),
 annualisation approach. Per-period gross is annualised, brackets applied,
 result divided back by pay periods. No YTD tracking — each period is
 calculated independently (deliberate; see technical plan risk note 1).
 """
 from django.test import TestCase
 from payroll.calculators.federal.calculator import calculate_federal_income_tax
+from payroll.calculators.nj import rates
 
 
 class FederalIncomeTaxTest(TestCase):
@@ -82,3 +83,17 @@ class FederalIncomeTaxTest(TestCase):
         values = list(reconstructed.values())
         for v in values:
             self.assertAlmostEqual(v, values[0], delta=1.00)
+    def test_explicit_2026_matches_implicit_default(self):
+        default = calculate_federal_income_tax(1000.00, "SINGLE", "WEEKLY")
+        explicit = calculate_federal_income_tax(
+            1000.00, "SINGLE", "WEEKLY", tax_year=rates.FEDERAL_TAX_YEAR
+        )
+        self.assertEqual(default, explicit)
+
+    def test_2025_schedule_differs_from_2026(self):
+        y2026 = calculate_federal_income_tax(1000.00, "SINGLE", "WEEKLY", tax_year=rates.FEDERAL_TAX_YEAR)
+        y2025 = calculate_federal_income_tax(1000.00, "SINGLE", "WEEKLY", tax_year=2025)
+        self.assertEqual(y2026, 78.08)
+        self.assertEqual(y2025, 80.80)
+        self.assertNotEqual(y2025, y2026)
+

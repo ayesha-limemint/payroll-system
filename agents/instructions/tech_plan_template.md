@@ -104,4 +104,20 @@ def function_name(param: type) -> return_type:
 None
 
 ---
-_Template version: 1.0 — edit this file in the repo to change the format for all future technical plans_
+
+## 10. Pass B — Cross-check
+> Complete **after** sections 1–9 per `agents/instructions/phases/phase_05_technical_plan.md`.
+
+### Architecture conformance (`payroll_system_architecture.md`)
+- **Result:** conforms / violates / N/A with doc update
+- **Notes:**
+
+### Playbook conformance (`payroll_domain_playbook.md`)
+- **tax_year / pay_date in API or calculator:** [yes / no / deferred with reason]
+
+### Superpowers prompts (see `superpowers_crosscheck_prompts.md`)
+- **Simplest correct implementation:**
+- **Test mapping complete:** yes / no
+
+---
+_Template version: 1.1 — edit this file in the repo to fix the format for all future technical plans_
