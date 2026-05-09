@@ -45,6 +45,19 @@ Only after working through all five questions should you write the plan document
 
 ---
 
+## Pass B — Cross-check (mandatory before notifying Ash)
+
+Do **not** notify Ash after Pass A alone. Complete Pass B first.
+
+1. Read [`agents/instructions/payroll_domain_playbook.md`](../payroll_domain_playbook.md).
+2. Read [`agents/instructions/superpowers_crosscheck_prompts.md`](../superpowers_crosscheck_prompts.md) (Phase 3 section).
+3. Append a section **exactly** titled `## Pass B — Cross-check` to the same Drive document (`01_functional_plan.md`), answering every prompt in the Superpowers file for Phase 3. Include the playbook scan (**Pass / Fail / N/A** per section).
+4. **Stop rule:** Any **Fail** on a playbook item requires revising Pass A or opening questions for Ash — no silent deferral.
+
+Only after Pass B is saved should you send the functional-plan notification.
+
+---
+
 ## If you have questions before writing
 
 If any of the five questions above cannot be answered confidently —
@@ -121,9 +134,12 @@ Written: YYYY-MM-DD HH:MM UTC
 
 ## Sources
 [Any external references consulted — tax tables, IRS publications, etc.]
+
+## Pass B — Cross-check
+[Completed after Pass A — playbook scan + Superpowers prompts from agents/instructions/superpowers_crosscheck_prompts.md]
 ```
 
-After saving, send Ash a Gmail notification:
+After saving **Pass A and Pass B**, send Ash a Gmail notification:
 - Subject: `[Milton] Functional plan ready for review — YYYY-MM-DD`
 - Body: one-paragraph summary + direct Drive link
 
