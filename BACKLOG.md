@@ -57,7 +57,7 @@ semi-monthly, monthly).
 
 ---
 
-### [~] Day 3 — FICA contributions
+### [x] Day 3 — FICA contributions
 **Goal:** Calculate Social Security and Medicare employee contributions.
 **Context:** FICA is straightforward but has two important constraints:
 Social Security has an annual wage base cap ($184,500 for 2026 — in rates.py).
@@ -72,7 +72,7 @@ The Additional Medicare Tax (0.9% above $200k) is deferred to Phase 2.
 
 ---
 
-### [ ] Day 4 — NJ state income tax calculator
+### [~] Day 4 — NJ state income tax calculator
 **Goal:** Calculate NJ state income tax withholding for a given gross income,
 filing status, and pay frequency.
 **Context:** NJ has 7 brackets (in rates.py under NJ_BRACKETS_*). The
