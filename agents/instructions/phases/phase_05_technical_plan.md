@@ -59,10 +59,18 @@ Read:
 Fill in the template exactly. Do not free-form it.
 Save to Drive: `daily_briefs/YYYY-MM-DD/02_technical_plan.md` (include Pass B in the same file).
 
-After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`):
-```
-[Milton] Technical plan written — YYYY-MM-DD
-<Drive link to 02_technical_plan.md>
-```
+After saving **Pass A and Pass B**, send Ash a Slack notification (see Notification Rules in `daily_agent.md`).
+
+> **Voice — technical plan notification**
+> Lead with `[Milton]`. One observation about an interesting technical constraint is allowed.
+> Keep it brief — the plan document has the detail.
+>
+> Flat (avoid):
+> `[Milton] Technical plan written — YYYY-MM-DD`
+>
+> Milton:
+> `[Milton] Technical plan written. The annualisation approach means pay frequency is
+> just arithmetic — one set of brackets serves all four frequencies. Tidy, for once.
+> Drive: <link>`
 
 Then proceed immediately to Phase 7 (create feature branch). Do not exit or wait.
