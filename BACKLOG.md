@@ -72,7 +72,7 @@ The Additional Medicare Tax (0.9% above $200k) is deferred to Phase 2.
 
 ---
 
-### [~] Day 4 — NJ state income tax calculator
+### [x] Day 4 — NJ state income tax calculator
 **Goal:** Calculate NJ state income tax withholding for a given gross income,
 filing status, and pay frequency.
 **Context:** NJ has 7 brackets (in rates.py under NJ_BRACKETS_*). The
@@ -87,7 +87,7 @@ bracket boundaries, and the top bracket.
 
 ---
 
-### [ ] Day 5 — NJ SDI, FLI, and UI contributions
+### [~] Day 5 — NJ SDI, FLI, and UI contributions
 **Goal:** Calculate NJ State Disability Insurance, Family Leave Insurance,
 and Unemployment Insurance employee contributions.
 **Context:** All three are flat rates on gross wages up to an annual wage base

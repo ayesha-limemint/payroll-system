@@ -13,7 +13,14 @@
       "Bash(git checkout *)",
       "Bash(git pull *)",
       "Bash(git cherry-pick *)",
-      "Bash(gh pr create --title 'Workflow: pull main before branching; context summary in CHANGELOG' --base main --body ' *)"
+      "Bash(gh pr create --title 'Workflow: pull main before branching; context summary in CHANGELOG' --base main --body ' *)",
+      "Bash(python -c \"import playwright; print\\('playwright available'\\)\")",
+      "Bash(python -c \"import PIL; print\\('PIL available'\\)\")",
+      "Bash(pip show *)",
+      "Bash(playwright install *)",
+      "Bash(git commit *)",
+      "Bash(git -c http.sslVerify=false push)",
+      "Bash(git rm *)"
     ]
   }
 }
