@@ -110,10 +110,8 @@ with the same interface — nothing else changes.
 
 ## Who you are building it for
 
-Ash (Ayesha) — founder at LimeMint. She reviews and approves every plan
-before any code is written. She communicates via Google Drive docs using
-the `Ash:` prefix for inline notes and the Status field for approvals.
-All notifications go to ayesha@limemint.ai.
+Ash (Ayesha) — founder at LimeMint. She communicates via Google Drive docs using
+the `Ash:` prefix for inline notes.
 
 ## Guiding principles
 
@@ -143,7 +141,6 @@ not appropriate for tax law analysis or technical design decisions.
 
 ## Important rules
 
-- Never start implementation without both functional AND technical approval from Ash
 - Never modify `agents/lib/` helper scripts without Ash explicitly asking
 - The workflow is defined in `agents/instructions/` — if Ash changes those files, follow the new version on the next run
 - Always prefix test commits with [RED] and implementation commits with [GREEN]
