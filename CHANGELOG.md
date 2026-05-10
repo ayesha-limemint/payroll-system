@@ -7,6 +7,28 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-10 — Day 5: NJ SDI, FLI, and UI contributions
+
+**Added**
+- `payroll/calculators/nj/nj_contributions.py` — `calculate_nj_contributions(gross_pay, ytd_gross=0)`
+- Returns `{"nj_sdi": Decimal, "nj_fli": Decimal, "nj_ui": Decimal}` per pay period
+- SDI: 0.19% on `min(gross_pay, max(0, 171_100 - ytd_gross))` — cumulative cap, 2026 rate
+- FLI: 0.23% on same SDI/FLI wage base cap — same pattern, different rate
+- UI/WF/SWF: 0.425% on `min(gross_pay, max(0, 44_800 - ytd_gross))` — lower wage base exhausts first
+- All three caps applied independently against the same `ytd_gross`; pattern identical to FICA
+- Django UI at `/nj-contributions/` — form accepts gross_pay and ytd_gross, displays contribution table
+- 6 tests: below all caps, crosses UI base mid-period, UI exhausted/SDI+FLI active, all caps exhausted, crosses SDI/FLI base mid-period, zero gross
+- 34 tests total — full regression clean
+
+*Three flat rates, three wage bases, one ytd_gross. SDI and FLI share a base; UI has its own, substantially lower one. The interesting paycheck is the one where ytd crosses $44,800 mid-year — UI goes to zero while SDI and FLI keep going. The test suite catches that. — Milton*
+
+### Context
+~45% of 200k window — medium session: ~40 tool calls, 6 Drive reads/writes, 2 web searches,
+10 repo files read. Usage split between Drive plan writing (functional + technical), UI
+verification via preview tool, and the RED→GREEN→regression cycle.
+
+---
+
 ## 2026-05-09 — Day 4: NJ state income tax calculator
 
 **Added**

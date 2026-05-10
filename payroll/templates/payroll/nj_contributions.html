@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NJ Employee Contributions Calculator</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    h1 { font-size: 1.4rem; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input[type="number"] { width: 100%; padding: 6px; margin-top: 4px; font-size: 1rem; box-sizing: border-box; }
+    button { margin-top: 16px; padding: 8px 20px; font-size: 1rem; cursor: pointer; }
+    table { border-collapse: collapse; width: 100%; margin-top: 24px; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+    th { background: #f4f4f4; }
+    td.amount { text-align: right; font-family: monospace; }
+    .note { font-size: 0.85rem; color: #666; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>NJ Employee Contributions</h1>
+  <p>Calculates NJ SDI, FLI, and UI/WF/SWF employee contributions for one pay period.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="gross_pay">Gross Pay (this period, $)</label>
+    <input type="number" id="gross_pay" name="gross_pay" min="0" step="0.01"
+           value="{{ request.POST.gross_pay|default:'' }}" required>
+
+    <label for="ytd_gross">YTD Gross (before this period, $)</label>
+    <input type="number" id="ytd_gross" name="ytd_gross" min="0" step="0.01"
+           value="{{ request.POST.ytd_gross|default:'0' }}" required>
+
+    <button type="submit">Calculate</button>
+  </form>
+
+  {% if result %}
+  <table>
+    <thead>
+      <tr><th>Contribution</th><th>Rate</th><th>Wage Base (2026)</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>NJ SDI (Temporary Disability)</td>
+        <td>0.19%</td>
+        <td>$171,100</td>
+        <td class="amount">${{ result.nj_sdi }}</td>
+      </tr>
+      <tr>
+        <td>NJ FLI (Family Leave)</td>
+        <td>0.23%</td>
+        <td>$171,100</td>
+        <td class="amount">${{ result.nj_fli }}</td>
+      </tr>
+      <tr>
+        <td>NJ UI/WF/SWF</td>
+        <td>0.425%</td>
+        <td>$44,800</td>
+        <td class="amount">${{ result.nj_ui }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note">Rates sourced from NJ DOL (2026). YTD gross determines remaining wage base for each cap.</p>
+  {% endif %}
+</body>
+</html>
