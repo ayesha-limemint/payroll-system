@@ -61,6 +61,7 @@ never starts until the previous one reaches Status: COMPLETE.**
 | 7 | [phase_07_create_branch.md](phases/phase_07_create_branch.md) | Create feature branch |
 | 8 | [phase_08_write_tests.md](phases/phase_08_write_tests.md) | Write failing tests [RED] |
 | 9 | [phase_09_implement.md](phases/phase_09_implement.md) | Implement until tests pass [GREEN] |
+| 9b | [phase_09b_ui_screenshot.md](phases/phase_09b_ui_screenshot.md) | Start dev server, exercise UI, capture screenshot, save to `screenshots/` |
 | 10 | [phase_10_regression.md](phases/phase_10_regression.md) | Run full test suite |
 | 11 | [phase_11_commit_pr.md](phases/phase_11_commit_pr.md) | Commit, open PR, update changelog |
 | 12 | [phase_12_session_summary.md](phases/phase_12_session_summary.md) | Write summary, set Status: COMPLETE |

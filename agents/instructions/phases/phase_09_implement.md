@@ -9,4 +9,4 @@ Cycle: implement → run tests → fix → repeat until all new tests pass.
 Commit message format:
 `[GREEN] Day N: <feature name> — implementation`
 
-Do not proceed to Phase 10 until ALL new tests pass.
+Do not proceed to Phase 9b until ALL new tests pass.
