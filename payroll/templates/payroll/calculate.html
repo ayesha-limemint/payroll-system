@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NJ Gross-to-Net Calculator</title>
+<style>
+  body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.4rem; }
+  label { display: block; margin-top: 0.8rem; font-weight: bold; }
+  input, select { width: 100%; padding: 0.4rem; margin-top: 0.2rem; box-sizing: border-box; }
+  button { margin-top: 1.2rem; padding: 0.5rem 1.4rem; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1.2rem; }
+  th, td { border: 1px solid #ccc; padding: 0.45rem 0.7rem; text-align: left; }
+  th { background: #f5f5f5; }
+  td.amount { text-align: right; font-family: monospace; }
+  .totals td { font-weight: bold; background: #f9f9f9; }
+  .error { color: #c00; margin-top: 0.8rem; }
+  .hint { font-size: 0.85rem; color: #555; margin-top: 0.2rem; }
+</style>
+</head>
+<body>
+<h1>NJ Gross-to-Net Calculator</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  <label for="gross_pay">Gross Pay (this period)</label>
+  <input id="gross_pay" name="gross_pay" type="number" step="0.01" min="0"
+         value="{{ request.POST.gross_pay }}" placeholder="5000.00" required>
+
+  <label for="filing_status">Filing Status</label>
+  <select id="filing_status" name="filing_status">
+    {% for value, label in filing_status_choices %}
+      <option value="{{ value }}"
+        {% if request.POST.filing_status == value %}selected{% endif %}>
+        {{ label }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <label for="pay_frequency">Pay Frequency</label>
+  <select id="pay_frequency" name="pay_frequency">
+    {% for value, label in pay_frequency_choices %}
+      <option value="{{ value }}"
+        {% if request.POST.pay_frequency == value %}selected{% elif value == "biweekly" and not request.POST.pay_frequency %}selected{% endif %}>
+        {{ label }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <label for="ytd_gross">YTD Gross (before this period)</label>
+  <input id="ytd_gross" name="ytd_gross" type="number" step="0.01" min="0"
+         value="{{ request.POST.ytd_gross|default:'0' }}" placeholder="0.00" required>
+  <p class="hint">Total gross wages paid to this employee so far this calendar year, not including this paycheck. Use 0.00 for the first paycheck of the year.</p>
+
+  <label for="pay_date">Pay Date (optional)</label>
+  <input id="pay_date" name="pay_date" type="date"
+         value="{{ request.POST.pay_date }}">
+  <p class="hint">Determines the tax year. Defaults to current year if omitted.</p>
+
+  <button type="submit">Calculate</button>
+</form>
+
+{% if error %}
+  <p class="error">Error: {{ error }}</p>
+{% endif %}
+
+{% if result %}
+  <table>
+    <thead>
+      <tr><th>Description</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Gross Pay</td><td class="amount">${{ result.gross_pay }}</td></tr>
+      <tr><td colspan="2" style="background:#eee;font-size:0.85rem;padding:0.3rem 0.7rem;">
+        Taxes (Tax Year {{ result.tax_year }})
+      </td></tr>
+      {% for tax in result.taxes %}
+        <tr><td>&nbsp;&nbsp;{{ tax.name }}</td><td class="amount">${{ tax.amount }}</td></tr>
+      {% endfor %}
+      <tr class="totals">
+        <td>Total Taxes</td>
+        <td class="amount">${{ result.total_taxes }}</td>
+      </tr>
+      <tr class="totals">
+        <td>Net Pay</td>
+        <td class="amount">${{ result.net_pay }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% endif %}
+
+</body>
+</html>

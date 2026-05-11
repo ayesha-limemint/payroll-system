@@ -7,6 +7,30 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-11 — Day 6: Core gross-to-net API endpoint
+
+**Added**
+- `POST /api/v1/calculate/` — complete NJ payroll breakdown in a single request
+- Accepts `gross_pay`, `pay_frequency`, `filing_status`, `state`, `ytd_gross` (required), `pay_date` and `tax_year` (optional)
+- Wires all four calculator modules: federal income tax, FICA, NJ income tax, NJ contributions
+- Response: `taxes` array with 7 line items in canonical order (federal income → SS → Medicare → NJ income → NJ SDI → NJ FLI → NJ UI), `total_taxes`, `net_pay`, `deductions` (empty, ready for Phase 2), `tax_year` (resolved integer)
+- All monetary values as decimal strings (`"766.69"`) — no floating-point drift
+- `ytd_gross` passed independently to both `calculate_fica()` and `calculate_nj_contributions()` — each cap applied against its own wage base
+- State validation: only NJ supported; unsupported states return 400
+- Filing status and pay frequency normalised from lowercase API convention to uppercase calculator convention
+- Django UI at `/calculate/` — accepts all inputs, renders full 7-line tax breakdown with net pay
+- 5 tests: complete calculation (all 7 amounts verified), SS cap mid-year (ytd=$180k), missing ytd_gross→400, unsupported state→400, pay_date→tax_year resolution
+- 39 tests total — full regression clean
+
+*All five calculators are now connected. One POST call; seven deductions; one net figure. The hard part was always the order of operations — that ytd_gross feeds both FICA and the NJ contribution caps independently, not the same bucket. Scenario 2 was written to catch exactly the developer who forgets that. — Milton*
+
+### Context
+~40% of 200k window — medium session: ~35 tool calls, 4 Drive reads/writes, 0 web searches,
+12 repo files read. Bulk of time in implementation and test verification; plans written efficiently
+given all calculator building blocks were already in place.
+
+---
+
 ## 2026-05-10 — Day 5: NJ SDI, FLI, and UI contributions
 
 **Added**
