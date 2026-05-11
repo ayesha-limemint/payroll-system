@@ -105,7 +105,7 @@ cap (contributions truncated), caps already exhausted, and zero income.
 
 ---
 
-### [~] Day 6 — Core gross-to-net API endpoint
+### [x] Day 6 — Core gross-to-net API endpoint
 **Goal:** `POST /api/v1/calculate/` wires all calculators together and returns
 a complete gross-to-net breakdown.
 **Context:** This is the main API endpoint — the reason the system exists.
@@ -192,7 +192,7 @@ Schema shape validated (all keys present, correct types, decimal string format).
 
 ---
 
-### [ ] Day 7 — Django UI: calculator form
+### [~] Day 7 — Django UI: calculator form
 **Goal:** A simple web form at `/` that calls `POST /api/v1/calculate`
 and displays the gross-to-net breakdown in a readable format.
 **Context:** The UI is secondary to the API — it exists for manual testing
