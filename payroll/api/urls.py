@@ -8,4 +8,5 @@ urlpatterns = [
         views.federal_income_tax,
         name="federal-income-tax",
     ),
+    path("calculate/", views.calculate, name="calculate"),
 ]

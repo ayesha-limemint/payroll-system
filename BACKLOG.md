@@ -87,7 +87,7 @@ bracket boundaries, and the top bracket.
 
 ---
 
-### [~] Day 5 — NJ SDI, FLI, and UI contributions
+### [x] Day 5 — NJ SDI, FLI, and UI contributions
 **Goal:** Calculate NJ State Disability Insurance, Family Leave Insurance,
 and Unemployment Insurance employee contributions.
 **Context:** All three are flat rates on gross wages up to an annual wage base
@@ -105,7 +105,7 @@ cap (contributions truncated), caps already exhausted, and zero income.
 
 ---
 
-### [ ] Day 6 — Core gross-to-net API endpoint
+### [~] Day 6 — Core gross-to-net API endpoint
 **Goal:** `POST /api/v1/calculate/` wires all calculators together and returns
 a complete gross-to-net breakdown.
 **Context:** This is the main API endpoint — the reason the system exists.
