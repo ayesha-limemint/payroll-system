@@ -7,6 +7,19 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-11 — Day 7: Django UI calculator home at /
+
+**Added**
+- `GET /` — home page with NJ gross-to-net calculator form
+- Form fields: Gross Pay, Filing Status (all 4 statuses), Pay Frequency (all 4 frequencies), YTD Gross, Pay Date (optional)
+- Client-side JavaScript calls `POST /api/v1/calculate/` on submit; results rendered in-page without reload
+- Results table: 7 tax line items, total taxes, net pay, tax year
+- Error display for API 4xx responses
+- No server-side POST handler — clean API/UI boundary
+- 4 new tests (page loads, form fields, filing status options, pay frequency options); 43 total, all passing
+
+---
+
 ## 2026-05-11 — Day 6: Core gross-to-net API endpoint
 
 **Added**
