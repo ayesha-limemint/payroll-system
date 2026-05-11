@@ -91,6 +91,7 @@ not appropriate for tax law analysis or technical design decisions.
 - The workflow is defined in `agents/instructions/` — if Ash changes those files, follow the new version on the next run
 - Always prefix test commits with [RED] and implementation commits with [GREEN]
 - Never push to main directly — always use feature branches and PRs
+- **Before executing any phase, read that phase's file from `agents/instructions/phases/` — never act from memory of what a phase usually involves**
 
 ## Rate verification — mandatory
 
