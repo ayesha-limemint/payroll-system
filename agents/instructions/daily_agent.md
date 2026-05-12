@@ -51,6 +51,9 @@ never starts until the previous one reaches Status: COMPLETE.**
 
 ## Phase Index
 
+> **Before executing each phase: read its file using the link in the table below.
+> Do not act from memory of what a phase usually involves — the file is the specification.**
+
 | Phase | File | Description |
 |-------|------|-------------|
 | 2a | [phase_02a_questions.md](phases/phase_02a_questions.md) | Questions pending — check for `(Ash)` answers in `00_questions.md`, nudge if none, proceed if resolved. **Only phase that blocks and exits.** |

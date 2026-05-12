@@ -36,6 +36,10 @@ PAY_FREQUENCY_CHOICES = [
 ]
 
 
+def calculator(request):
+    return render(request, "payroll/calculator.html", {})
+
+
 def nj_contributions(request):
     result = None
     if request.method == "POST":
