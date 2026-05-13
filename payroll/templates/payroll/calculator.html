@@ -53,6 +53,17 @@
       <span>Pay Date <small>(optional — determines tax year)</small></span>
       <input type="date" name="pay_date">
     </label>
+    <fieldset style="margin-top:1rem;padding:0.75rem;border:1px solid #ccc">
+      <legend style="font-weight:bold">Pre-tax Deductions <small>(optional)</small></legend>
+      <label>
+        <span>401(k) Contribution ($)</span>
+        <input type="text" id="deduction-401k" placeholder="0.00">
+      </label>
+      <label style="margin-top:0.5rem">
+        <span>Health Insurance Premium ($)</span>
+        <input type="text" id="deduction-health" placeholder="0.00">
+      </label>
+    </fieldset>
     <input type="hidden" name="state" value="NJ">
     <button type="submit">Calculate</button>
   </form>
@@ -68,7 +79,22 @@
       <tbody id="tax-rows"></tbody>
       <tfoot>
         <tr><td>Total Taxes</td><td id="total-taxes"></td></tr>
-        <tr><td>Net Pay</td><td id="net-pay"></td></tr>
+      </tfoot>
+    </table>
+    <div id="deductions-section" style="display:none;margin-top:1rem">
+      <table>
+        <thead>
+          <tr><th>Pre-tax Deduction</th><th>Amount</th></tr>
+        </thead>
+        <tbody id="deduction-rows"></tbody>
+        <tfoot>
+          <tr><td>Total Deductions</td><td id="total-deductions"></td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <table style="margin-top:0.5rem">
+      <tfoot>
+        <tr><td><strong>Net Pay</strong></td><td id="net-pay"></td></tr>
       </tfoot>
     </table>
   </div>
@@ -83,6 +109,13 @@
       const fd = new FormData(this);
       const body = {};
       fd.forEach(function (v, k) { if (v !== '') body[k] = v; });
+
+      const deductions = [];
+      const amt401k = document.getElementById('deduction-401k').value.trim();
+      const amtHealth = document.getElementById('deduction-health').value.trim();
+      if (amt401k) deductions.push({ code: '401k', name: '401(k) Contribution', amount: amt401k });
+      if (amtHealth) deductions.push({ code: 'health_insurance', name: 'Health Insurance', amount: amtHealth });
+      if (deductions.length) body.deductions = deductions;
 
       try {
         const resp = await fetch('/api/v1/calculate/', {
@@ -115,6 +148,29 @@
         });
 
         document.getElementById('total-taxes').textContent = '$' + data.total_taxes;
+
+        const dedSection = document.getElementById('deductions-section');
+        if (data.deductions && data.deductions.length > 0) {
+          const dedTbody = document.getElementById('deduction-rows');
+          dedTbody.innerHTML = '';
+          let totalDed = 0;
+          data.deductions.forEach(function (d) {
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            const td2 = document.createElement('td');
+            td1.textContent = d.name || d.code;
+            td2.textContent = '$' + d.amount;
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            dedTbody.appendChild(tr);
+            totalDed += parseFloat(d.amount);
+          });
+          document.getElementById('total-deductions').textContent = '$' + totalDed.toFixed(2);
+          dedSection.style.display = 'block';
+        } else {
+          dedSection.style.display = 'none';
+        }
+
         document.getElementById('net-pay').textContent = '$' + data.net_pay;
         document.getElementById('results').style.display = 'block';
       } catch (err) {
