@@ -190,13 +190,14 @@ def calculate(request):
         return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
     taxes = [
-        {"code": "federal_income_tax", "name": "Federal Income Tax",  "amount": str(fed)},
-        {"code": "social_security",    "name": "Social Security",     "amount": str(fica["social_security"])},
-        {"code": "medicare",           "name": "Medicare",            "amount": str(fica["medicare"])},
-        {"code": "nj_income_tax",      "name": "NJ State Income Tax", "amount": str(nj_it)},
-        {"code": "nj_sdi",             "name": "NJ SDI",              "amount": str(nj_contrib["nj_sdi"])},
-        {"code": "nj_fli",             "name": "NJ FLI",              "amount": str(nj_contrib["nj_fli"])},
-        {"code": "nj_ui",              "name": "NJ UI",               "amount": str(nj_contrib["nj_ui"])},
+        {"code": "federal_income_tax",  "name": "Federal Income Tax",      "amount": str(fed)},
+        {"code": "social_security",     "name": "Social Security",         "amount": str(fica["social_security"])},
+        {"code": "medicare",            "name": "Medicare",                "amount": str(fica["medicare"])},
+        {"code": "additional_medicare", "name": "Additional Medicare Tax", "amount": str(fica["additional_medicare"])},
+        {"code": "nj_income_tax",       "name": "NJ State Income Tax",     "amount": str(nj_it)},
+        {"code": "nj_sdi",              "name": "NJ SDI",                  "amount": str(nj_contrib["nj_sdi"])},
+        {"code": "nj_fli",              "name": "NJ FLI",                  "amount": str(nj_contrib["nj_fli"])},
+        {"code": "nj_ui",               "name": "NJ UI",                   "amount": str(nj_contrib["nj_ui"])},
     ]
     total_taxes = sum(Decimal(t["amount"]) for t in taxes)
     net_pay = gross - total_taxes - total_deductions

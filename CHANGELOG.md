@@ -27,6 +27,24 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 ### Context
 ~55% of 200k window — medium-heavy session: ~90 tool calls, 6 Drive reads/writes, 0 web searches,
 18 files read. Usage driven by full planning cycle (functional plan with Pass B + technical plan with Pass B), calculating exact hand-verified test values across 5 scenarios, views.py deduction logic, template work, and screenshot capture (5 states via Playwright).
+## 2026-05-12 — Day 8: Additional Medicare Tax (0.9%)
+
+**Added**
+- Additional Medicare Tax (0.9%) to `calculate_fica()` — returns three values now: `social_security`, `medicare`, `additional_medicare`
+- Employer withholding threshold: $200,000 per employee per year, regardless of filing status (IRS Pub. 15)
+- Same inverted wage-base pattern as Social Security: `amt_wages = max(0, gross - max(0, 200_000 - ytd_gross))`
+- `POST /api/v1/calculate/` taxes array grows from 7 to 8 items; `additional_medicare` inserted between `medicare` and `nj_income_tax`
+- Line item always present in response (shows $0.00 for wages below threshold) — consistent with SS and NJ contributions
+- 5 new tests: below threshold, crossing threshold, already above, exactly at boundary, end-to-end API; 48 total, all passing
+- 4 screenshots: empty form, golden path ($0 AMT), AMT triggered ($45.00), AMT crossing threshold ($90.00)
+
+*The Additional Medicare Tax has been waiting patiently since Day 3. It applies to fewer than 4% of wage earners and generates the most questions. The threshold is $200,000 from the employer's perspective — the employee reconciles MFJ vs. single at year-end. Three lines of arithmetic and a constant that has not changed since 2013. — Milton*
+
+### Context
+~40% of 200k window — medium session: ~45 tool calls, 4 Drive reads/writes, 0 web searches,
+16 repo files read. Usage split between state recovery (Day 7 COMPLETE, starting Day 8),
+plan writing (functional + technical plans with Pass B), RED→GREEN→regression cycle (48 tests),
+Playwright screenshot capture (4 states), and PR. No web searches — AMT rate unchanged since 2013.
 
 ---
 

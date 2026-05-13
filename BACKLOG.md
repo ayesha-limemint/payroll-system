@@ -192,7 +192,7 @@ Schema shape validated (all keys present, correct types, decimal string format).
 
 ---
 
-### [~] Day 7 — Django UI: calculator form
+### [x] Day 7 — Django UI: calculator form
 **Goal:** A simple web form at `/` that calls `POST /api/v1/calculate`
 and displays the gross-to-net breakdown in a readable format.
 **Context:** The UI is secondary to the API — it exists for manual testing
@@ -208,7 +208,7 @@ beyond basic readable HTML.
 
 ## Phase 2 — Completeness (Week 2)
 
-### [ ] Additional Medicare Tax (0.9%)
+### [~] Additional Medicare Tax (0.9%)
 **Goal:** Apply the 0.9% Additional Medicare Tax for high earners.
 **Context:** Deferred from Day 3. Applies to wages over $200,000 (single)
 or $250,000 (MFJ). Employers withhold on wages over $200,000 regardless

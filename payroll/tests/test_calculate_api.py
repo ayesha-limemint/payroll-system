@@ -59,10 +59,13 @@ class CalculateAPITest(TestCase):
         self.assertEqual(data["tax_year"], 2026)
         self.assertEqual(data["deductions"], [])
 
-        # Taxes array: 7 items in canonical order with code/name/amount keys
-        self.assertEqual(len(data["taxes"]), 7)
+        # Taxes array: 8 items in canonical order with code/name/amount keys
+        # (federal_income_tax, social_security, medicare, additional_medicare,
+        #  nj_income_tax, nj_sdi, nj_fli, nj_ui)
+        self.assertEqual(len(data["taxes"]), 8)
         expected_codes = [
             "federal_income_tax", "social_security", "medicare",
+            "additional_medicare",
             "nj_income_tax", "nj_sdi", "nj_fli", "nj_ui",
         ]
         for i, code in enumerate(expected_codes):
@@ -70,17 +73,18 @@ class CalculateAPITest(TestCase):
             self.assertIn("name", data["taxes"][i])
             self.assertIn("amount", data["taxes"][i])
 
-        # Tax amounts
+        # Tax amounts (additional_medicare=$0.00 — ytd=$0, gross=$5,000, well below $200k threshold)
         amounts = {t["code"]: t["amount"] for t in data["taxes"]}
-        self.assertEqual(amounts["federal_income_tax"], "766.69")
-        self.assertEqual(amounts["social_security"],    "310.00")
-        self.assertEqual(amounts["medicare"],           "72.50")
-        self.assertEqual(amounts["nj_income_tax"],      "231.82")
-        self.assertEqual(amounts["nj_sdi"],             "9.50")
-        self.assertEqual(amounts["nj_fli"],             "11.50")
-        self.assertEqual(amounts["nj_ui"],              "21.25")
+        self.assertEqual(amounts["federal_income_tax"],  "766.69")
+        self.assertEqual(amounts["social_security"],     "310.00")
+        self.assertEqual(amounts["medicare"],            "72.50")
+        self.assertEqual(amounts["additional_medicare"], "0.00")
+        self.assertEqual(amounts["nj_income_tax"],       "231.82")
+        self.assertEqual(amounts["nj_sdi"],              "9.50")
+        self.assertEqual(amounts["nj_fli"],              "11.50")
+        self.assertEqual(amounts["nj_ui"],               "21.25")
 
-        # Totals
+        # Totals unchanged from Day 6 (AMT=$0.00 for this case)
         self.assertEqual(data["total_taxes"], "1423.26")
         self.assertEqual(data["net_pay"],     "3576.74")
 
