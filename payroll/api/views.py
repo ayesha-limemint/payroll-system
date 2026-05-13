@@ -163,11 +163,28 @@ def calculate(request):
         if pay_date is None:
             return Response({"detail": "pay_date must be YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
 
+    raw_deductions = data.get("deductions", [])
+    parsed_deductions = []
+    total_deductions = Decimal("0")
+    if isinstance(raw_deductions, list):
+        for d in raw_deductions:
+            try:
+                amt = Decimal(str(d["amount"]))
+                parsed_deductions.append({**d, "amount": str(amt.quantize(Decimal("0.01")))})
+                total_deductions += amt
+            except (KeyError, TypeError, InvalidOperation):
+                return Response(
+                    {"detail": "Each deduction must have code and amount fields."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+    taxable = max(Decimal("0"), gross - total_deductions)
+
     try:
         year = resolve_federal_tax_year(tax_year=tax_year_arg, pay_date=pay_date)
-        fed = calculate_federal_income_tax(gross, calc_filing, calc_freq, tax_year=year)
+        fed = calculate_federal_income_tax(taxable, calc_filing, calc_freq, tax_year=year)
         fica = calculate_fica(gross, ytd_gross=ytd)
-        nj_it = calculate_nj_income_tax(gross, calc_filing, calc_freq)
+        nj_it = calculate_nj_income_tax(taxable, calc_filing, calc_freq)
         nj_contrib = calculate_nj_contributions(gross, ytd_gross=ytd)
     except ValueError as exc:
         return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
@@ -183,7 +200,7 @@ def calculate(request):
         {"code": "nj_ui",               "name": "NJ UI",                   "amount": str(nj_contrib["nj_ui"])},
     ]
     total_taxes = sum(Decimal(t["amount"]) for t in taxes)
-    net_pay = gross - total_taxes
+    net_pay = gross - total_taxes - total_deductions
 
     return Response(
         {
@@ -195,7 +212,7 @@ def calculate(request):
             "tax_year":      year,
             "taxes":         taxes,
             "total_taxes":   str(total_taxes.quantize(Decimal("0.01"))),
-            "deductions":    [],
+            "deductions":    parsed_deductions,
         },
         status=status.HTTP_200_OK,
     )
