@@ -7,6 +7,29 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-13 — Day 9: Pre-tax deductions (401k, health insurance)
+
+**Added**
+- `deductions` field in `POST /api/v1/calculate/` request — optional array of `{code, amount}` objects; defaults to `[]`
+- `taxable_income = max(0, gross_pay - sum(deductions))` computed in `calculate()` view; passed to federal and NJ income tax calculators
+- FICA (Social Security, Medicare, Additional Medicare) and NJ contributions (SDI, FLI, UI) remain on `gross_pay` — deductions do not reduce wage-based contributions
+- `net_pay = gross_pay - total_taxes - sum(deductions)` — deduction amounts subtracted separately from taxes
+- Response `deductions` array populated from input (previously always `[]`)
+- Calculator form at `/` updated: "Pre-tax Deductions" fieldset with 401(k) Contribution and Health Insurance Premium optional inputs
+- Results display updated: deductions section (separate table below taxes) shown when deductions are present; Net Pay moved to its own row below
+- 5 new tests: golden path unchanged, 401k reduces income taxes not FICA, multiple deductions combine, FICA/NJ contributions unaffected by large deduction, net_pay formula and bracket crossing; 48 total, all passing
+- 5 screenshots: empty form with new fields, golden path (no deductions), 401k $500, multiple deductions, $2,000 deduction crossing federal bracket boundary
+
+**Note:** NJ income tax is treated as pre-tax for all deductions (matching the backlog spec). In real-world NJ payroll, 401k elective deferrals are not excluded from NJ wages — that distinction is deferred to a future backlog item.
+
+*Pre-tax deductions are where payroll gets interesting: five lines of implementation change the outcome for every high earner in the system. The key is the order of operations — deductions come off taxable income before brackets, but FICA doesn't know they exist. The test suite has an explicit invariant for that. The NJ/401k treatment is simplified here; real NJ disagrees with federal on this point, and has since 1997. — Milton*
+
+### Context
+~55% of 200k window — medium-heavy session: ~90 tool calls, 6 Drive reads/writes, 0 web searches,
+18 files read. Usage driven by full planning cycle (functional plan with Pass B + technical plan with Pass B), calculating exact hand-verified test values across 5 scenarios, views.py deduction logic, template work, and screenshot capture (5 states via Playwright).
+
+---
+
 ## 2026-05-11 — Day 7: Django UI calculator home at /
 
 **Added**
