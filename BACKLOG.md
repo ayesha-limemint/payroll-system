@@ -220,7 +220,7 @@ whether and how much additional Medicare applies this period. No new parameters 
 
 ---
 
-### [ ] Pre-tax deductions
+### [~] Pre-tax deductions
 **Goal:** Support flat-dollar pre-tax deductions (401k, health insurance)
 that reduce federal and NJ taxable income before bracket calculation.
 **Context:** Pre-tax deductions (traditional 401k, health insurance premiums)
