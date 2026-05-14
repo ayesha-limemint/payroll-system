@@ -208,7 +208,7 @@ beyond basic readable HTML.
 
 ## Phase 2 — Completeness (Week 2)
 
-### [~] Additional Medicare Tax (0.9%)
+### [x] Additional Medicare Tax (0.9%)
 **Goal:** Apply the 0.9% Additional Medicare Tax for high earners.
 **Context:** Deferred from Day 3. Applies to wages over $200,000 (single)
 or $250,000 (MFJ). Employers withhold on wages over $200,000 regardless
@@ -220,7 +220,7 @@ whether and how much additional Medicare applies this period. No new parameters 
 
 ---
 
-### [~] Pre-tax deductions
+### [x] Pre-tax deductions
 **Goal:** Support flat-dollar pre-tax deductions (401k, health insurance)
 that reduce federal and NJ taxable income before bracket calculation.
 **Context:** Pre-tax deductions (traditional 401k, health insurance premiums)
@@ -232,7 +232,7 @@ is critical — get it wrong and every calculation is incorrect.
 
 ---
 
-### [ ] Multiple pay frequencies
+### [~] Multiple pay frequencies
 **Goal:** Ensure all calculators correctly handle weekly, bi-weekly,
 semi-monthly, and monthly pay frequencies.
 **Context:** Withholding is calculated by annualising gross pay, applying
