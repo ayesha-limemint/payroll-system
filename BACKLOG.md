@@ -232,7 +232,7 @@ is critical — get it wrong and every calculation is incorrect.
 
 ---
 
-### [~] Multiple pay frequencies
+### [x] Multiple pay frequencies
 **Goal:** Ensure all calculators correctly handle weekly, bi-weekly,
 semi-monthly, and monthly pay frequencies.
 **Context:** Withholding is calculated by annualising gross pay, applying
