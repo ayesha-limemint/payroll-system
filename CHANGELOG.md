@@ -7,6 +7,24 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-14 — Day 10: Multiple pay frequencies (all-frequency regression pass)
+
+**Added**
+- 5 new API-level tests in `payroll/tests/test_pay_frequencies.py` covering `weekly`, `semi_monthly`, and `monthly` via `POST /api/v1/calculate/` (biweekly was already covered in `test_calculate_api.py`)
+- Scenarios: weekly single ($2,000/wk → $1,475.85 net), semi-monthly single ($2,500 → $2,007.12), monthly single ($5,000 → $4,014.25), invalid frequency → 400, and weekly MFJ ($3,000 → $2,316.31)
+- 5 screenshots: empty form, weekly-single, semi-monthly, monthly, weekly-MFJ
+
+**Changed**
+- Nothing. This is a test-only session — all four pay frequencies were already handled correctly by the view (`_PAY_FREQUENCY_MAP`) and all calculators (`PAY_PERIODS`). The tests verify existing behaviour.
+
+**Note:** Tests pass immediately on write (no RED→GREEN cycle) because this session is explicitly a regression verification pass, per the backlog item. The 5 new tests bring API-level frequency coverage from 1 frequency to all 4. 58 total tests passing.
+
+*Pay frequency is nothing more than a divisor — you annualise the gross, apply the brackets, and divide the result. Four frequencies, one bracket table, zero new code. The surprising part is that this had no test coverage at the API level until today. The calculator unit tests have been carrying it on faith since Day 2. — Milton*
+
+### Context
+~50% of 200k window — medium session: ~55 tool calls, 4 Drive reads/writes, 0 web searches,
+14 files read. Usage driven by state recovery (Drive folder inspection), full planning cycle (functional + technical plan with Pass B), Python verification of 5 scenario values, test file authoring, Playwright screenshot capture (5 states), and regression suite run.
+
 ## 2026-05-13 — Day 9: Pre-tax deductions (401k, health insurance)
 
 **Added**
