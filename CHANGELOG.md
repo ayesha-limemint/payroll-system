@@ -7,6 +7,26 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-19 — Day 11: API input validation and error responses
+
+**Added**
+- `gross_pay > 0` validation in `POST /api/v1/calculate/` — returns 400 `{"detail": "gross_pay must be a positive number."}` for zero or negative values
+- `ytd_gross >= 0` validation in `POST /api/v1/calculate/` — returns 400 `{"detail": "ytd_gross must be non-negative."}` for negative values
+- Same numeric validations added to the Django UI form handler (`payroll/views.py:nj_calculate`) — UI shows inline error, no results rendered
+- Consistent error schema formalised: all 400 responses return `{"detail": "<non-empty string>"}` — documented in CHANGELOG and technical plan
+- 6 new tests: gross_pay=0→400, gross_pay<0→400, ytd_gross<0→400, invalid filing_status detail lists accepted values, all 400 paths have `detail` key, UI rejects zero gross pay; 59 total, all passing
+- 4 screenshots: empty form, golden path ($5,000 biweekly), gross-zero error, ytd-negative (HTML min=0 constraint)
+
+*The endpoint already rejected unknown states and bad filing statuses with named error messages. What it accepted without complaint: zero gross pay (returns all-zero taxes and calls it a paycheck) and negative YTD (inflates wage base eligible amounts in ways that benefit nobody). Two guard clauses. The system is now slightly less willing to calculate a payroll run for nobody. — Milton*
+
+### Context
+~35% of 200k window — medium session: ~40 tool calls, 4 Drive reads/writes, 0 web searches,
+14 files read. Usage split between state recovery (Day 10 COMPLETE, starting Day 11), plan writing
+(functional + technical plans with Pass B), two-line implementation in views.py, 6-test RED→GREEN
+cycle, Playwright screenshot capture (4 states), and PR.
+
+---
+
 ## 2026-05-13 — Day 9: Pre-tax deductions (401k, health insurance)
 
 **Added**

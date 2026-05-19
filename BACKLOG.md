@@ -245,7 +245,7 @@ calculators.
 
 ---
 
-### [~] API input validation and error responses
+### [x] API input validation and error responses
 **Goal:** Return clear, structured error responses for invalid input.
 **Context:** External agents calling the API need predictable error formats.
 Define a consistent error response schema. Validate: required fields present,
