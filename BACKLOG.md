@@ -232,7 +232,7 @@ is critical — get it wrong and every calculation is incorrect.
 
 ---
 
-### [~] Multiple pay frequencies
+### [x] Multiple pay frequencies
 **Goal:** Ensure all calculators correctly handle weekly, bi-weekly,
 semi-monthly, and monthly pay frequencies.
 **Context:** Withholding is calculated by annualising gross pay, applying
@@ -245,7 +245,7 @@ calculators.
 
 ---
 
-### [ ] API input validation and error responses
+### [x] API input validation and error responses
 **Goal:** Return clear, structured error responses for invalid input.
 **Context:** External agents calling the API need predictable error formats.
 Define a consistent error response schema. Validate: required fields present,
@@ -260,7 +260,7 @@ is a positive number, state is a supported state.
 These items are defined so Milton understands the direction, but no
 session should be started on them until Phase 2 is complete.
 
-- [ ] Annual W-2 reconciliation / cumulative accuracy (per-paycheck YTD is in place from Day 3; this covers full-year cross-period verification and edge cases like mid-year starts)
+- [~] Annual W-2 reconciliation / cumulative accuracy (per-paycheck YTD is in place from Day 3; this covers full-year cross-period verification and edge cases like mid-year starts)
 - [ ] NJ part-year resident handling
 - [ ] Additional states (PA, NY, CA) — architecture is ready
 - [ ] Batch / multi-employee payroll calculations
