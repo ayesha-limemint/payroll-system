@@ -10,6 +10,11 @@ from payroll.calculators.federal.calculator import (
 from payroll.calculators.federal.fica import calculate_fica
 from payroll.calculators.nj.nj_contributions import calculate_nj_contributions
 from payroll.calculators.nj.nj_income_tax import calculate_nj_income_tax
+from payroll.calculators.nj.rates import (
+    NJ_SDI_WAGE_BASE,
+    NJ_UI_WAGE_BASE,
+    SOCIAL_SECURITY_WAGE_BASE,
+)
 
 _FILING_STATUS_MAP = {
     "single": "SINGLE",
@@ -52,6 +57,7 @@ def nj_contributions(request):
 def nj_calculate(request):
     result = None
     error = None
+    cap_utilization = None
     if request.method == "POST":
         try:
             gross = Decimal(request.POST.get("gross_pay", "0"))
@@ -90,12 +96,28 @@ def nj_calculate(request):
                 "net_pay":     gross - total_taxes,
                 "tax_year":    year,
             }
+            ytd_after = ytd + gross
+            ss_wb = Decimal(str(SOCIAL_SECURITY_WAGE_BASE))
+            sdi_fli_wb = Decimal(str(NJ_SDI_WAGE_BASE))
+            ui_wb = Decimal(str(NJ_UI_WAGE_BASE))
+            cap_utilization = {
+                "ss_wage_base":         SOCIAL_SECURITY_WAGE_BASE,
+                "ss_used":              min(ytd_after, ss_wb),
+                "ss_remaining":         max(Decimal("0"), ss_wb - ytd_after),
+                "nj_sdi_fli_wage_base": NJ_SDI_WAGE_BASE,
+                "nj_sdi_fli_used":      min(ytd_after, sdi_fli_wb),
+                "nj_sdi_fli_remaining": max(Decimal("0"), sdi_fli_wb - ytd_after),
+                "nj_ui_wage_base":      NJ_UI_WAGE_BASE,
+                "nj_ui_used":           min(ytd_after, ui_wb),
+                "nj_ui_remaining":      max(Decimal("0"), ui_wb - ytd_after),
+            }
         except (InvalidOperation, ValueError) as exc:
             error = str(exc)
 
     return render(request, "payroll/calculate.html", {
         "result": result,
         "error": error,
+        "cap_utilization": cap_utilization,
         "filing_status_choices": FILING_STATUS_CHOICES,
         "pay_frequency_choices": PAY_FREQUENCY_CHOICES,
     })
