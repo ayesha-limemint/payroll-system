@@ -130,6 +130,18 @@ def calculate(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    if gross <= Decimal("0"):
+        return Response(
+            {"detail": "gross_pay must be a positive number."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    if ytd < Decimal("0"):
+        return Response(
+            {"detail": "ytd_gross must be non-negative."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     if state not in _SUPPORTED_STATES:
         return Response(
             {"detail": f"Unsupported state: {state!r}. Supported states: NJ"},
