@@ -90,5 +90,35 @@
   </table>
 {% endif %}
 
+{% if cap_utilization %}
+<h3 style="margin-top:1.5rem;">Wage Base Utilization</h3>
+<p class="hint">Cumulative year-to-date after this paycheck.</p>
+<table id="cap-utilization">
+  <thead>
+    <tr><th>Wage Base</th><th>Cap</th><th>Used</th><th>Remaining</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Social Security</td>
+      <td class="amount">${{ cap_utilization.ss_wage_base }}</td>
+      <td class="amount">${{ cap_utilization.ss_used }}</td>
+      <td class="amount">${{ cap_utilization.ss_remaining }}</td>
+    </tr>
+    <tr>
+      <td>NJ SDI / FLI</td>
+      <td class="amount">${{ cap_utilization.nj_sdi_fli_wage_base }}</td>
+      <td class="amount">${{ cap_utilization.nj_sdi_fli_used }}</td>
+      <td class="amount">${{ cap_utilization.nj_sdi_fli_remaining }}</td>
+    </tr>
+    <tr>
+      <td>NJ UI</td>
+      <td class="amount">${{ cap_utilization.nj_ui_wage_base }}</td>
+      <td class="amount">${{ cap_utilization.nj_ui_used }}</td>
+      <td class="amount">${{ cap_utilization.nj_ui_remaining }}</td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+
 </body>
 </html>

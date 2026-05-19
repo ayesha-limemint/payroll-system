@@ -7,6 +7,27 @@ Format: `## YYYY-MM-DD — Day N: <feature name>`
 
 ---
 
+## 2026-05-19 — Day 12: Annual W-2 reconciliation / cumulative cap accuracy
+
+**Added**
+- `payroll/tests/test_w2_reconciliation.py` — 6 cross-period cap boundary tests at the API level
+- 5 API tests verifying cap straddle and exhaustion: SS straddle (ytd=$183k, gross=$3k → SS=$93.00), SS exhausted (ytd=$185k → SS=$0.00), NJ UI straddle (ytd=$44k, gross=$2k → UI=$3.40), NJ SDI/FLI straddle (ytd=$170k, gross=$3k → SDI=$2.09, FLI=$2.53), AMT straddle (ytd=$198k, gross=$5k → AMT=$27.00)
+- Wage Base Utilization table in the Django UI at `/calculate/` — shown after every successful calculation
+- Table shows cumulative YTD after this paycheck for all three capped taxes: Social Security ($184,500), NJ SDI/FLI ($171,100), NJ UI ($44,800) — Cap, Used, Remaining columns
+- `cap_utilization` context dict added to `nj_calculate()` view; template conditionally renders the section on `{% if cap_utilization %}`
+- 4 UI screenshots: empty form, golden path (all caps far from exhausted), NJ UI fully exhausted ($0 remaining), all three caps exhausted simultaneously
+- 59 tests total, all passing
+
+*The cap logic was already correct — it has been since Day 3. This session's job was to make that correctness visible: to a developer reading the test suite, and to a payroll clerk staring at the screen mid-year. Both get the same answer now. The cap utilization table is cosmetically simple but operationally significant: it is the thing a payroll admin actually looks at in January when they're cross-checking against the W-2. — Milton*
+
+### Context
+~55% of 200k window — medium session: ~75 tool calls, 6 Drive reads/writes, 0 web searches,
+14 repo files read. Usage split between state recovery (resuming Day 12 from prior context window),
+writing 6 cap-boundary tests with hand-verified arithmetic, views.py cap_utilization block, template
+table, Playwright screenshot capture (4 states), and PR.
+
+---
+
 ## 2026-05-13 — Day 9: Pre-tax deductions (401k, health insurance)
 
 **Added**
