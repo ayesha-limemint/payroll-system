@@ -60,6 +60,11 @@ def nj_calculate(request):
             freq = request.POST.get("pay_frequency", "biweekly")
             pay_date_str = request.POST.get("pay_date", "").strip()
 
+            if gross <= Decimal("0"):
+                raise ValueError("Gross pay must be a positive number.")
+            if ytd < Decimal("0"):
+                raise ValueError("YTD gross must be non-negative.")
+
             calc_filing = _FILING_STATUS_MAP.get(filing)
             calc_freq = _PAY_FREQUENCY_MAP.get(freq)
             if not calc_filing or not calc_freq:
